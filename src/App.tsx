@@ -3,8 +3,9 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import HomeView from './views/HomeView';
 import CalculatorView from './views/CalculatorView';
+import OptionsView from './views/OptionsView';
 
-type ActiveView = 'home' | 'calculator';
+type ActiveView = 'home' | 'calculator' | 'options';
 
 function AppContent() {
   const [activeView, setActiveView] = useState<ActiveView>('home');
@@ -13,10 +14,9 @@ function AppContent() {
   return (
     <div className={`flex flex-col min-h-dvh ${isDark ? 'dark bg-[#080f0b]' : 'bg-slate-50'}`}>
       <div className="flex-1 overflow-y-auto">
-        {activeView === 'home'
-          ? <HomeView onNavigate={(view) => setActiveView(view)} />
-          : <CalculatorView />
-        }
+        {activeView === 'home' && <HomeView onNavigate={(view) => setActiveView(view)} />}
+        {activeView === 'calculator' && <CalculatorView />}
+        {activeView === 'options' && <OptionsView />}
       </div>
       <Navbar activeView={activeView} onNavigate={setActiveView} />
     </div>

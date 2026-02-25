@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { calcRho, calcP0, calcL, calcLq, calcW, calcWq, calcPn } from '../utils/math/queuingFormulas';
 import { ResultCard } from './ResultCard';
+import { DistMM1 } from './DistMM1';
 
 export const MM1: React.FC = () => {
     const [lambda, setLambda] = useState<number | ''>('');
@@ -65,7 +66,7 @@ export const MM1: React.FC = () => {
                 </div>
 
                 {Pn !== null && (
-                    <div className="mt-4 p-4 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-700/50 dark:shadow-md dark:shadow-emerald-900/40">
+                    <div className="p-4 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-700/50 dark:shadow-md dark:shadow-emerald-900/40">
                         <h4 className="text-sm font-medium text-emerald-800 dark:text-emerald-400 mb-1">
                             Probabilidad de {targetN} clientes en el sistema (Pn)
                         </h4>
@@ -74,6 +75,8 @@ export const MM1: React.FC = () => {
                         </div>
                     </div>
                 )}
+                {/* ─── Distribución de Probabilidades ─── */}
+                <DistMM1 rho={rho} />
             </div>
         );
     };
