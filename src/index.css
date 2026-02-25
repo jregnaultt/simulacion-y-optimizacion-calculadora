@@ -1,31 +1,72 @@
+/* ── Google Fonts — debe ir ANTES de @import tailwindcss ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* ── Tailwind CSS v4 — con dark mode basado en clase .dark ── */
 @import "tailwindcss";
 
-:root {
-  --bg-primary: #f8fafc;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --accent-primary: #0ea5e9;
-  --accent-secondary: #0284c7;
+/* Dark mode via clase .dark en el ancestro */
+@variant dark (&:where(.dark, .dark *));
+
+/* ── Keyframes ── */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* ── Animaciones y tokens personalizados ── */
 @theme {
-  --color-primary: var(--accent-primary);
-  --color-primary-dark: var(--accent-secondary);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --animate-fade-slide-up: fadeSlideUp 0.5s ease both;
+  --animate-float: float 3s ease-in-out infinite;
 }
 
-body {
-  margin: 0;
-  display: block;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* ── Base ── */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
 
-#root {
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: left;
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    max-width: 430px;
+    margin-inline: auto;
+    min-height: 100dvh;
+  }
 }
