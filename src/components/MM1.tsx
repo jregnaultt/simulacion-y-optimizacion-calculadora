@@ -169,6 +169,8 @@ export const MM1: React.FC = () => {
                   id="mm1-lambda"
                   type="number"
                   inputMode="decimal"
+                  min="0"
+                  step="any"
                   className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                bg-slate-50 dark:bg-[#0e0715]
                                text-slate-900 dark:text-purple-100
@@ -179,9 +181,26 @@ export const MM1: React.FC = () => {
                                outline-none text-sm p-2 transition-all"
                   placeholder="Ej. 2 clientes/hora"
                   value={lambda}
-                  onChange={(e) =>
-                    setLambda(e.target.value ? Number(e.target.value) : "")
-                  }
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setLambda("");
+                      return;
+                    }
+                    const valNum = Number(e.target.value);
+                    setLambda(
+                      !isNaN(valNum) ? Math.max(0, Math.abs(valNum)) : "",
+                    );
+                  }}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "-" ||
+                      e.key === "e" ||
+                      e.key === "E" ||
+                      e.key === "+"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -196,6 +215,8 @@ export const MM1: React.FC = () => {
                   id="mm1-mu"
                   type="number"
                   inputMode="decimal"
+                  min="0"
+                  step="any"
                   className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                bg-slate-50 dark:bg-[#0e0715]
                                text-slate-900 dark:text-purple-50
@@ -206,9 +227,24 @@ export const MM1: React.FC = () => {
                                outline-none text-sm p-2 transition-all"
                   placeholder="Ej. 3 clientes/hora"
                   value={mu}
-                  onChange={(e) =>
-                    setMu(e.target.value ? Number(e.target.value) : "")
-                  }
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setMu("");
+                      return;
+                    }
+                    const valNum = Number(e.target.value);
+                    setMu(!isNaN(valNum) ? Math.max(0, Math.abs(valNum)) : "");
+                  }}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "-" ||
+                      e.key === "e" ||
+                      e.key === "E" ||
+                      e.key === "+"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -225,6 +261,7 @@ export const MM1: React.FC = () => {
                 type="number"
                 inputMode="numeric"
                 min="0"
+                step="1"
                 className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                            bg-slate-50 dark:bg-[#0e0715]
                            text-slate-900 dark:text-purple-100
@@ -235,9 +272,26 @@ export const MM1: React.FC = () => {
                            outline-none text-sm p-2 transition-all"
                 placeholder="Ingrese un valor para n..."
                 value={targetN}
-                onChange={(e) =>
-                  setTargetN(e.target.value ? Number(e.target.value) : "")
-                }
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setTargetN("");
+                    return;
+                  }
+                  const valNum = parseInt(e.target.value, 10);
+                  setTargetN(
+                    !isNaN(valNum) ? Math.max(0, Math.abs(valNum)) : "",
+                  );
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+"
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </div>
           </div>

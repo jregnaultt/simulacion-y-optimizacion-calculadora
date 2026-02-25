@@ -184,6 +184,8 @@ export const MM1K: React.FC = () => {
                   id="mm1k-lambda"
                   type="number"
                   inputMode="decimal"
+                  min="0"
+                  step="any"
                   className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                  bg-slate-50 dark:bg-[#0e0715]
                                  text-slate-900 dark:text-purple-50
@@ -194,9 +196,26 @@ export const MM1K: React.FC = () => {
                                  outline-none text-sm p-2 transition-all"
                   placeholder="Ej. 2 clientes/hora"
                   value={lambda}
-                  onChange={(e) =>
-                    setLambda(e.target.value ? Number(e.target.value) : "")
-                  }
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setLambda("");
+                      return;
+                    }
+                    const valNum = Number(e.target.value);
+                    setLambda(
+                      !isNaN(valNum) ? Math.max(0, Math.abs(valNum)) : "",
+                    );
+                  }}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "-" ||
+                      e.key === "e" ||
+                      e.key === "E" ||
+                      e.key === "+"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
@@ -211,6 +230,8 @@ export const MM1K: React.FC = () => {
                   id="mm1k-mu"
                   type="number"
                   inputMode="decimal"
+                  min="0"
+                  step="any"
                   className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                  bg-slate-50 dark:bg-[#0e0715]
                                  text-slate-900 dark:text-purple-50
@@ -221,9 +242,24 @@ export const MM1K: React.FC = () => {
                                  outline-none text-sm p-2 transition-all"
                   placeholder="Ej. 3 clientes/hora"
                   value={mu}
-                  onChange={(e) =>
-                    setMu(e.target.value ? Number(e.target.value) : "")
-                  }
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setMu("");
+                      return;
+                    }
+                    const valNum = Number(e.target.value);
+                    setMu(!isNaN(valNum) ? Math.max(0, Math.abs(valNum)) : "");
+                  }}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "-" ||
+                      e.key === "e" ||
+                      e.key === "E" ||
+                      e.key === "+"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -240,6 +276,7 @@ export const MM1K: React.FC = () => {
                 type="number"
                 inputMode="numeric"
                 min="1"
+                step="1"
                 className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                            bg-slate-50 dark:bg-[#0e0715]
                            text-slate-900 dark:text-purple-100
@@ -250,9 +287,26 @@ export const MM1K: React.FC = () => {
                            outline-none text-sm p-2 transition-all"
                 placeholder="Límite en el sistema (cola + servidor)"
                 value={kParam}
-                onChange={(e) =>
-                  setKParam(e.target.value ? Number(e.target.value) : "")
-                }
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setKParam("");
+                    return;
+                  }
+                  const valNum = parseInt(e.target.value, 10);
+                  setKParam(
+                    !isNaN(valNum) ? Math.max(1, Math.abs(valNum)) : "",
+                  );
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+"
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
               />
               <p className="text-[10px] text-slate-400 dark:text-purple-800 mt-1 pl-1">
                 Incluye a la persona siendo atendida y las que esperan.
@@ -271,6 +325,7 @@ export const MM1K: React.FC = () => {
                 type="number"
                 inputMode="numeric"
                 min="0"
+                step="1"
                 className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                            bg-slate-50 dark:bg-[#0e0715]
                            text-slate-900 dark:text-purple-100
@@ -281,9 +336,26 @@ export const MM1K: React.FC = () => {
                            outline-none text-sm p-2 transition-all"
                 placeholder="Ej. 2 clientes en sistema"
                 value={targetN}
-                onChange={(e) =>
-                  setTargetN(e.target.value ? Number(e.target.value) : "")
-                }
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setTargetN("");
+                    return;
+                  }
+                  const valNum = parseInt(e.target.value, 10);
+                  setTargetN(
+                    !isNaN(valNum) ? Math.max(0, Math.abs(valNum)) : "",
+                  );
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+"
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </div>
           </div>
