@@ -12,13 +12,13 @@ export const MM1: React.FC = () => {
         if (typeof lambda !== 'number' || typeof mu !== 'number' || lambda <= 0 || mu <= 0) {
             return (
                 <div className="flex flex-col items-center justify-center p-8 text-center
-                        bg-slate-50 dark:bg-emerald-950/30
+                        bg-slate-50 dark:bg-purple-950/30
                         rounded-2xl border border-dashed
-                        border-slate-200 dark:border-emerald-900 mt-6">
-                    <p className="text-slate-500 dark:text-emerald-600 mb-2">
+                        border-slate-200 dark:border-purple-900 mt-6">
+                    <p className="text-slate-500 dark:text-purple-600 mb-2">
                         Por favor, ingrese valores válidos mayores a 0.
                     </p>
-                    <p className="text-sm text-slate-400 dark:text-emerald-800">
+                    <p className="text-sm text-slate-400 dark:text-purple-800">
                         Nota: La tasa de servicio (μ) debe ser mayor a la tasa de llegada (λ) para que el sistema sea estable.
                     </p>
                 </div>
@@ -66,11 +66,11 @@ export const MM1: React.FC = () => {
                 </div>
 
                 {Pn !== null && (
-                    <div className="p-4 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-700/50 dark:shadow-md dark:shadow-emerald-900/40">
-                        <h4 className="text-sm font-medium text-emerald-800 dark:text-emerald-400 mb-1">
+                    <div className="p-4 bg-purple-50/50 dark:bg-purple-900/20 rounded-2xl border border-purple-100 dark:border-purple-700/50 dark:shadow-md dark:shadow-purple-900/40">
+                        <h4 className="text-sm font-medium text-purple-800 dark:text-purple-400 mb-1">
                             Probabilidad de {targetN} clientes en el sistema (Pn)
                         </h4>
-                        <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-300">
+                        <div className="text-2xl font-bold text-purple-900 dark:text-purple-300">
                             {(Pn * 100).toFixed(2)}%
                         </div>
                     </div>
@@ -84,37 +84,37 @@ export const MM1: React.FC = () => {
     return (
         <div className="flex flex-col h-full animate-[fadeSlideUp_0.3s_ease_both]">
             <div className="mb-6 space-y-4">
-                <p className="text-slate-500 dark:text-emerald-400 text-sm leading-relaxed">
+                <p className="text-slate-500 dark:text-purple-400 text-sm leading-relaxed">
                     Modelo de un solo servidor con{' '}
-                    <span className="font-semibold text-slate-700 dark:text-emerald-300">
+                    <span className="font-semibold text-slate-700 dark:text-purple-300">
                         capacidad infinita en el sistema
                     </span>
                     . Tiempos de llegada y servicio exponenciales.
                 </p>
 
-                <div className="bg-white dark:bg-[#0c1810] rounded-2xl border border-slate-200 dark:border-emerald-900/60 shadow-sm dark:shadow-black/40 overflow-hidden">
-                    <div className="p-4 border-b border-slate-100 dark:border-emerald-900/40 bg-slate-50/50 dark:bg-[#081208]/60">
-                        <h2 className="text-sm font-semibold text-slate-700 dark:text-emerald-500/90 uppercase tracking-wider">
+                <div className="bg-white dark:bg-[#12091c] rounded-2xl border border-slate-200 dark:border-purple-900/60 shadow-sm dark:shadow-black/40 overflow-hidden">
+                    <div className="p-4 border-b border-slate-100 dark:border-purple-900/40 bg-slate-50/50 dark:bg-[#0a040f]/60">
+                        <h2 className="text-sm font-semibold text-slate-700 dark:text-purple-500/90 uppercase tracking-wider">
                             Parámetros de Entrada
                         </h2>
                     </div>
                     <div className="p-4 space-y-4">
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <label htmlFor="mm1-lambda" className="block text-sm font-medium text-slate-700 dark:text-emerald-400 mb-1">
+                                <label htmlFor="mm1-lambda" className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
                                     Tasa de Llegada (λ)
                                 </label>
                                 <input
                                     id="mm1-lambda"
                                     type="number"
                                     inputMode="decimal"
-                                    className="block w-full rounded-xl border border-slate-300 dark:border-emerald-800
-                               bg-slate-50 dark:bg-[#0a1510]
-                               text-slate-900 dark:text-emerald-100
-                               placeholder:text-slate-400 dark:placeholder:text-emerald-900
-                               focus:border-emerald-500 dark:focus:border-emerald-500/80
-                               focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-emerald-500/15
-                               dark:focus:bg-[#0d1a13]
+                                    className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
+                               bg-slate-50 dark:bg-[#0e0715]
+                               text-slate-900 dark:text-purple-100
+                               placeholder:text-slate-400 dark:placeholder:text-purple-900
+                               focus:border-purple-500 dark:focus:border-purple-500/80
+                               focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                               dark:focus:bg-[#140a20]
                                outline-none text-sm p-2 transition-all"
                                     placeholder="Ej. 2 clientes/hora"
                                     value={lambda}
@@ -123,20 +123,20 @@ export const MM1: React.FC = () => {
                             </div>
 
                             <div>
-                                <label htmlFor="mm1-mu" className="block text-sm font-medium text-slate-700 dark:text-emerald-400 mb-1">
+                                <label htmlFor="mm1-mu" className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
                                     Tasa de Servicio (μ)
                                 </label>
                                 <input
                                     id="mm1-mu"
                                     type="number"
                                     inputMode="decimal"
-                                    className="block w-full rounded-xl border border-slate-300 dark:border-emerald-800
-                               bg-slate-50 dark:bg-[#0a1510]
-                               text-slate-900 dark:text-emerald-50
-                               placeholder:text-slate-400 dark:placeholder:text-emerald-800
-                               focus:border-emerald-500 dark:focus:border-emerald-500/80
-                               focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-emerald-500/15
-                               dark:focus:bg-[#0d1a13]
+                                    className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
+                               bg-slate-50 dark:bg-[#0e0715]
+                               text-slate-900 dark:text-purple-50
+                               placeholder:text-slate-400 dark:placeholder:text-purple-800
+                               focus:border-purple-500 dark:focus:border-purple-500/80
+                               focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                               dark:focus:bg-[#140a20]
                                outline-none text-sm p-2 transition-all"
                                     placeholder="Ej. 3 clientes/hora"
                                     value={mu}
@@ -145,8 +145,8 @@ export const MM1: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="pt-2 border-t border-slate-100 dark:border-emerald-900/30">
-                            <label htmlFor="mm1-pn" className="block text-sm font-medium text-slate-700 dark:text-emerald-400 mb-1">
+                        <div className="pt-2 border-t border-slate-100 dark:border-purple-900/30">
+                            <label htmlFor="mm1-pn" className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
                                 Prob. de 'n' clientes (opcional)
                             </label>
                             <input
@@ -154,13 +154,13 @@ export const MM1: React.FC = () => {
                                 type="number"
                                 inputMode="numeric"
                                 min="0"
-                                className="block w-full rounded-xl border border-slate-300 dark:border-emerald-800
-                           bg-slate-50 dark:bg-[#0a1510]
-                           text-slate-900 dark:text-emerald-100
-                           placeholder:text-slate-400 dark:placeholder:text-emerald-900
-                           focus:border-emerald-500 dark:focus:border-emerald-500/80
-                           focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-emerald-500/15
-                           dark:focus:bg-[#0d1a13]
+                                className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
+                           bg-slate-50 dark:bg-[#0e0715]
+                           text-slate-900 dark:text-purple-100
+                           placeholder:text-slate-400 dark:placeholder:text-purple-900
+                           focus:border-purple-500 dark:focus:border-purple-500/80
+                           focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                           dark:focus:bg-[#140a20]
                            outline-none text-sm p-2 transition-all"
                                 placeholder="Ingrese un valor para n..."
                                 value={targetN}
@@ -172,7 +172,7 @@ export const MM1: React.FC = () => {
             </div>
 
             <div className="flex-1 pb-4">
-                <h2 className="text-lg font-bold text-slate-900 dark:text-emerald-50 mb-2">Resultados</h2>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-purple-50 mb-2">Resultados</h2>
                 {renderResults()}
             </div>
         </div>

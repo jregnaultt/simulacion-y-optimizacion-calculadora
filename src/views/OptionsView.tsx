@@ -29,18 +29,18 @@ export default function OptionsView() {
                 <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
                     Configuración
                 </h1>
-                <p className="text-slate-500 dark:text-emerald-400/60 mt-2">
+                <p className="text-slate-500 dark:text-purple-400/60 mt-2">
                     Personaliza tu experiencia con la calculadora
                 </p>
             </header>
 
-            <section className="bg-white/50 dark:bg-emerald-950/20 backdrop-blur-sm border border-slate-200 dark:border-emerald-900/30 rounded-2xl p-6 shadow-sm">
+            <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                        <h2 className="text-lg font-semibold text-slate-800 dark:text-emerald-50">
+                        <h2 className="text-lg font-semibold text-slate-800 dark:text-purple-50">
                             Modo Visual
                         </h2>
-                        <p className="text-sm text-slate-500 dark:text-emerald-400/50">
+                        <p className="text-sm text-slate-500 dark:text-purple-400/50">
                             Escoge entre el tema claro u oscuro
                         </p>
                     </div>
@@ -49,7 +49,7 @@ export default function OptionsView() {
                         onClick={toggle}
                         className={`
                             relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none
-                            ${isDark ? 'bg-emerald-600' : 'bg-slate-200'}
+                            ${isDark ? 'bg-purple-600' : 'bg-slate-200'}
                         `}
                     >
                         <span className="sr-only">Cambiar modo</span>
@@ -69,13 +69,13 @@ export default function OptionsView() {
                 </div>
             </section>
 
-            <section className="bg-white/50 dark:bg-emerald-950/20 backdrop-blur-sm border border-slate-200 dark:border-emerald-900/30 rounded-2xl p-6 shadow-sm">
+            <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
                 <div className="space-y-4">
                     <div className="space-y-1">
-                        <h2 className="text-lg font-semibold text-slate-800 dark:text-emerald-50">
+                        <h2 className="text-lg font-semibold text-slate-800 dark:text-purple-50">
                             Error
                         </h2>
-                        <p className="text-sm text-slate-500 dark:text-emerald-400/50">
+                        <p className="text-sm text-slate-500 dark:text-purple-400/50">
                             Margen de error aceptable para los cálculos
                         </p>
                     </div>
@@ -83,7 +83,7 @@ export default function OptionsView() {
                     <input
                         type="text"
                         placeholder="Ej: 0.001"
-                        className="w-full bg-white dark:bg-[#0a1510] border border-slate-300 dark:border-emerald-800/70 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 transition-all"
+                        className="w-full bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-purple-50 focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-all"
                         readOnly
                     />
                 </div>

@@ -12,7 +12,7 @@ function AppContent() {
   const { isDark } = useTheme();
 
   return (
-    <div className={`flex flex-col min-h-dvh ${isDark ? 'dark bg-[#080f0b]' : 'bg-slate-50'}`}>
+    <div className={`flex flex-col min-h-dvh ${isDark ? 'dark bg-[#0b0510]' : 'bg-slate-50'}`}>
       <div className="flex-1 overflow-y-auto">
         {activeView === 'home' && <HomeView onNavigate={(view) => setActiveView(view)} />}
         {activeView === 'calculator' && <CalculatorView />}
