@@ -38,12 +38,14 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
 
       {/* ═══════════ CONTENIDO ═══════════ */}
       <div className="flex flex-col flex-1 px-5 py-8 gap-8">
-        {/* Bienvenida */}
-        <div className="flex flex-col gap-3">
-          <h2 className="text-[1.4rem] font-bold">¡Bienvenido! 👋</h2>
+        {/* Header Section */}
+        <div className="flex flex-col gap-2">
+          <h2 className="text-[1.3rem] font-bold text-slate-800 dark:text-purple-100">
+            Análisis de Sistemas
+          </h2>
           <p className="text-[0.9rem] text-slate-600 dark:text-purple-300 leading-relaxed">
-            Herramienta de simulación para analizar sistemas de colas. Calcula
-            métricas de rendimiento para servidores con y sin límite de cola.
+            Módulo integral para el cálculo de métricas en sistemas de colas
+            (M/M/1 y M/M/1/K).
           </p>
         </div>
 
@@ -74,21 +76,34 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                        active:scale-[0.99]
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
           >
-            <div className="p-5 flex flex-col gap-4">
+            <div className="p-5 flex flex-col">
               {/* Fila: ícono + badge */}
               <div className="flex items-center justify-between">
                 <div
                   className="w-12 h-12 rounded-xl
-                                bg-purple-100 dark:bg-purple-900
-                                flex items-center justify-center text-2xl"
+                                bg-purple-100 dark:bg-purple-900/50
+                                flex items-center justify-center text-purple-600 dark:text-purple-400"
                 >
-                  🖥️
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+                    />
+                  </svg>
                 </div>
                 <span
                   className="text-[0.65rem] font-bold uppercase tracking-wide
                                  text-purple-600 dark:text-purple-400
-                                 bg-purple-50 dark:bg-purple-950
-                                 border border-purple-300 dark:border-purple-800
+                                 bg-purple-50 dark:bg-purple-900/30
+                                 border border-purple-200 dark:border-purple-800/50
                                  px-3 py-1 rounded-full"
                 >
                   Calculadora
@@ -97,18 +112,17 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
 
               {/* Textos */}
               <div className="flex flex-col gap-1.5">
-                <h3 className="text-[1.1rem] font-bold">
-                  Cálculo de Servidores
+                <h3 className="text-[1.1rem] font-bold text-slate-800 dark:text-purple-50">
+                  Simulación de Servidores
                 </h3>
-                <p className="text-[0.8rem] font-semibold text-purple-600 dark:text-purple-500">
-                  Cola limitada &amp; Cola ilimitada
+                <p className="text-[0.8rem] font-semibold text-purple-600 dark:text-purple-400">
+                  M/M/1 &amp; M/M/1/K
                 </p>
                 <p className="text-[0.85rem] text-slate-600 dark:text-purple-300 leading-relaxed">
-                  Ingresa los parámetros del sistema y obtén métricas clave:
-                  utilización, clientes en espera y tiempo promedio en cola.
+                  Calcule utilización, tiempos promedios y distribución
+                  estadística de usuarios en el sistema.
                 </p>
               </div>
-
               {/* Footer del card */}
               <div
                 className="flex items-center justify-between
