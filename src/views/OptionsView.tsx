@@ -42,6 +42,15 @@ function MoonIcon() {
 
 const DECIMAL_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
 
+const TOLERANCE_OPTIONS = [
+  { value: 0.1, label: "0.1" },
+  { value: 0.01, label: "0.01" },
+  { value: 0.001, label: "0.001" },
+  { value: 0.0001, label: "0.0001" },
+  { value: 0.00001, label: "0.00001" },
+  { value: 0.000001, label: "0.000001" },
+];
+
 /* ─── Toast Alert Component ─── */
 function ToleranceToast({
   message,
@@ -76,23 +85,21 @@ function ToleranceToast({
 
 export default function OptionsView() {
   const { isDark, toggle } = useTheme();
-  const {
-    decimals,
-    tolerance,
-    setDecimals,
-    increaseTolerance,
-    decreaseTolerance,
-  } = useSettings();
+  const { decimals, tolerance, setDecimals, setTolerance } = useSettings();
 
   /* ─── Toast state ─── */
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const showToast = (direction: "up" | "down", newVal: number) => {
-    const dirText = direction === "up" ? "más filas" : "menos filas";
+  const handleToleranceChange = (newVal: number) => {
+    const moreRows = newVal < tolerance;
+    setTolerance(newVal);
+
     setToastMessage(
-      `Tolerancia → ${newVal.toExponential(0)} — La tabla mostrará ${dirText}`
+      moreRows
+        ? `Más precisión — La tabla mostrará más filas`
+        : `Menos precisión — La tabla mostrará menos filas`
     );
     setToastVisible(true);
 
@@ -100,28 +107,11 @@ export default function OptionsView() {
     timerRef.current = setTimeout(() => setToastVisible(false), 3000);
   };
 
-  // Cleanup timer on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
-
-  const handleIncrease = () => {
-    const next = Math.min(0.5, tolerance * 10);
-    increaseTolerance();
-    showToast("down", next); // higher tolerance = less rows
-  };
-
-  const handleDecrease = () => {
-    const next = Math.max(0.000001, tolerance / 10);
-    decreaseTolerance();
-    showToast("up", next); // lower tolerance = more rows
-  };
-
-  // Check if buttons are at limits
-  const atMax = tolerance >= 0.5;
-  const atMin = tolerance <= 0.000001;
 
   return (
     <>
@@ -218,81 +208,29 @@ export default function OptionsView() {
               </p>
             </div>
 
-            {/* ─── Stepper Control ─── */}
-            <div className="flex items-center justify-center gap-4">
-              {/* Decrease (more precise = more rows) */}
-              <button
-                onClick={handleDecrease}
-                disabled={atMin}
-                className={`
-                  flex items-center justify-center w-14 h-14 rounded-2xl
-                  text-xl font-bold transition-all duration-200
-                  ${
-                    atMin
-                      ? "bg-slate-100 dark:bg-purple-950/30 text-slate-300 dark:text-purple-900 cursor-not-allowed"
-                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-purple-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80 hover:shadow-md hover:shadow-purple-500/20 active:scale-95"
-                  }
-                `}
-                aria-label="Disminuir tolerancia"
-              >
-                ▼
-              </button>
-
-              {/* Current value display */}
-              <div className="flex flex-col items-center min-w-[10rem]">
-                <span className="text-2xl font-bold text-slate-900 dark:text-purple-50 tabular-nums tracking-wide">
-                  {tolerance.toExponential(0)}
-                </span>
-                <span className="text-[0.65rem] text-slate-400 dark:text-purple-700 font-medium mt-1">
-                  {tolerance.toFixed(
-                    Math.max(0, -Math.floor(Math.log10(tolerance)))
-                  )}
-                </span>
-              </div>
-
-              {/* Increase (less precise = fewer rows) */}
-              <button
-                onClick={handleIncrease}
-                disabled={atMax}
-                className={`
-                  flex items-center justify-center w-14 h-14 rounded-2xl
-                  text-xl font-bold transition-all duration-200
-                  ${
-                    atMax
-                      ? "bg-slate-100 dark:bg-purple-950/30 text-slate-300 dark:text-purple-900 cursor-not-allowed"
-                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-purple-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80 hover:shadow-md hover:shadow-purple-500/20 active:scale-95"
-                  }
-                `}
-                aria-label="Aumentar tolerancia"
-              >
-                ▲
-              </button>
-            </div>
-
-            {/* Scale indicator */}
-            <div className="flex items-center justify-between px-2">
-              <span className="text-[0.6rem] text-slate-400 dark:text-purple-800 font-medium">
-                1e-6 (más filas)
-              </span>
-              <div className="flex-1 mx-3 h-1 bg-slate-100 dark:bg-purple-950/60 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-purple-400 dark:bg-purple-500 rounded-full transition-all duration-500"
-                  style={{
-                    width: `${
-                      ((Math.log10(tolerance) + 6) / (Math.log10(0.5) + 6)) *
-                      100
-                    }%`,
-                  }}
-                />
-              </div>
-              <span className="text-[0.6rem] text-slate-400 dark:text-purple-800 font-medium">
-                0.5 (menos filas)
-              </span>
+            {/* ─── Chip Selector ─── */}
+            <div className="flex flex-wrap gap-2">
+              {TOLERANCE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => handleToleranceChange(opt.value)}
+                  className={`
+                    px-3 h-10 rounded-xl text-sm font-bold transition-all duration-200
+                    ${
+                      tolerance === opt.value
+                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
+                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                    }
+                  `}
+                >
+                  {opt.label}
+                </button>
+              ))}
             </div>
 
             <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
-              La tabla de distribución M/M/1 se detiene cuando Pn &lt;{" "}
-              {tolerance.toExponential(0)}. Valor menor = más filas.
+              La tabla se detiene cuando Pn &lt; {tolerance}. Valor más pequeño
+              = más filas en la tabla.
             </p>
           </div>
         </section>
