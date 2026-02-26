@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Calculadora de Teoría de Colas</string>
-    <string name="title_activity_main">Calculadora de Teoría de Colas</string>
+    <string name="app_name">LambdaρRo</string>
+    <string name="title_activity_main">LambdaρRo</string>
     <string name="package_name">com.regnault.colascalc</string>
     <string name="custom_url_scheme">com.regnault.colascalc</string>
 </resources>
