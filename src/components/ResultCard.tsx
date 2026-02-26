@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSettings } from '../context/SettingsContext';
 
 interface ResultCardProps {
   title: string;
@@ -15,6 +16,8 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   description,
   highlight = false,
 }) => {
+  const { decimals } = useSettings();
+
   return (
     <div className={`p-4 rounded-2xl border transition-all duration-200
       ${highlight
@@ -42,7 +45,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
           : 'text-slate-900 dark:text-purple-100'
         }`}>
         {typeof value === 'number'
-          ? Number.isInteger(value) ? value : value.toFixed(4)
+          ? Number.isInteger(value) ? value : value.toFixed(decimals)
           : value}
       </div>
       <p className="text-xs text-slate-400 dark:text-purple-700/80">{description}</p>

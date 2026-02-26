@@ -1,4 +1,5 @@
 import { useTheme } from "../context/ThemeContext";
+import { useSettings } from "../context/SettingsContext";
 
 function SunIcon() {
   return (
@@ -38,8 +39,11 @@ function MoonIcon() {
   );
 }
 
+const DECIMAL_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
+
 export default function OptionsView() {
   const { isDark, toggle } = useTheme();
+  const { decimals, tolerance, setDecimals, setTolerance } = useSettings();
 
   return (
     <div className="p-6 max-w-2xl mx-auto space-y-8 pb-24">
@@ -52,6 +56,7 @@ export default function OptionsView() {
         </p>
       </header>
 
+      {/* ─── Modo Visual ─── */}
       <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
@@ -83,6 +88,44 @@ export default function OptionsView() {
         </div>
       </section>
 
+      {/* ─── Cantidad de Decimales ─── */}
+      <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-purple-50">
+              Cantidad de Decimales
+            </h2>
+            <p className="text-sm text-slate-500 dark:text-purple-400/50">
+              Precisión decimal en los resultados
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {DECIMAL_OPTIONS.map((n) => (
+              <button
+                key={n}
+                onClick={() => setDecimals(n)}
+                className={`
+                  min-w-[2.5rem] h-10 rounded-xl text-sm font-bold transition-all duration-200
+                  ${
+                    decimals === n
+                      ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
+                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                  }
+                `}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+          <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
+            Valor actual: {decimals} decimales — Ejemplo:{" "}
+            {(0.123456789).toFixed(decimals)}
+          </p>
+        </div>
+      </section>
+
+      {/* ─── Tolerancia de Error ─── */}
       <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
         <div className="space-y-4">
           <div className="space-y-1">
@@ -90,16 +133,29 @@ export default function OptionsView() {
               Tolerancia de Error
             </h2>
             <p className="text-sm text-slate-500 dark:text-purple-400/50">
-              Precisión decimal para los cálculos
+              Umbral de corte para la distribución M/M/1
             </p>
           </div>
 
           <input
-            type="text"
-            placeholder="Ej: 0.001"
+            type="number"
+            inputMode="decimal"
+            min="0.000001"
+            max="0.5"
+            step="0.0001"
+            value={tolerance}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              if (!isNaN(val) && val > 0 && val < 1) {
+                setTolerance(val);
+              }
+            }}
             className="w-full bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-purple-50 focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-all"
-            readOnly
           />
+          <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
+            La tabla de distribución M/M/1 se detiene cuando Pn &lt;{" "}
+            {tolerance}. Valor menor = más filas.
+          </p>
         </div>
       </section>
     </div>

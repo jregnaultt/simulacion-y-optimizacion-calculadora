@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { SettingsProvider } from './context/SettingsContext';
 import Navbar from './components/Navbar';
 import HomeView from './views/HomeView';
 import CalculatorView from './views/CalculatorView';
@@ -25,8 +26,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <SettingsProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </SettingsProvider>
   );
 }

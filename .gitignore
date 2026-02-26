@@ -24,6 +24,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+guia_capacitor_github_actions.txt
 
 proyecto.md
 prompt_sugerido.md

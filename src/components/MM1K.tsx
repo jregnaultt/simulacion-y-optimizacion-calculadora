@@ -12,8 +12,10 @@ import {
 } from "../utils/math/queuingFormulas";
 import { ResultCard } from "./ResultCard";
 import { DistMM1K } from "./DistMM1K";
+import { useSettings } from "../context/SettingsContext";
 
 export const MM1K: React.FC = () => {
+  const { decimals } = useSettings();
   const [lambda, setLambda] = useState<number | "">("");
   const [mu, setMu] = useState<number | "">("");
   const [kParam, setKParam] = useState<number | "">("");
@@ -136,7 +138,7 @@ export const MM1K: React.FC = () => {
               Probabilidad de {targetN} clientes en el sistema (Pn)
             </h4>
             <div className="text-2xl font-bold text-purple-900 dark:text-purple-300">
-              {(Pn * 100).toFixed(2)}%
+              {(Pn * 100).toFixed(decimals)}%
             </div>
           </div>
         )}

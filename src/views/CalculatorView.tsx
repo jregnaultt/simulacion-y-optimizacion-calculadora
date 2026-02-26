@@ -57,7 +57,7 @@ const OPTIONS: Option[] = [
 ];
 
 export default function CalculatorView() {
-  const [selected, setSelected] = useState<QueueType>("");
+  const [selected, setSelected] = useState<QueueType>("ilimitada");
   const [open, setOpen] = useState(false);
 
   const current = OPTIONS.find((o) => o.value === selected);
