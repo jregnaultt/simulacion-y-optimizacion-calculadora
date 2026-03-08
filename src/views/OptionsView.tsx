@@ -64,9 +64,9 @@ function ToleranceToast({
       className={`
         fixed top-6 left-1/2 -translate-x-1/2 z-[100]
         max-w-[90vw] px-5 py-3
-        bg-purple-600/95 dark:bg-purple-500/95 backdrop-blur-md
+        bg-violet-600/95 dark:bg-violet-500/95 backdrop-blur-md
         text-white text-sm font-semibold
-        rounded-2xl shadow-xl shadow-purple-900/40
+        rounded-2xl shadow-lg shadow-black/10 dark:shadow-black/30
         transition-all duration-500 ease-out
         ${
           visible
@@ -99,7 +99,7 @@ export default function OptionsView() {
     setToastMessage(
       moreRows
         ? `Más precisión — La tabla mostrará más filas`
-        : `Menos precisión — La tabla mostrará menos filas`
+        : `Menos precisión — La tabla mostrará menos filas`,
     );
     setToastVisible(true);
 
@@ -122,19 +122,19 @@ export default function OptionsView() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Configuración
           </h1>
-          <p className="text-slate-500 dark:text-purple-400/60 mt-2">
+          <p className="text-slate-500 dark:text-violet-400/60 mt-2">
             Configuración de preferencias del sistema
           </p>
         </header>
 
         {/* ─── Modo Visual ─── */}
-        <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
+        <section className="bg-white/50 dark:bg-zinc-900 backdrop-blur-sm border border-slate-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-slate-800 dark:text-purple-50">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-violet-50">
                 Modo Visual
               </h2>
-              <p className="text-sm text-slate-500 dark:text-purple-400/50">
+              <p className="text-sm text-slate-500 dark:text-violet-400/50">
                 Alternar tema de interfaz
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function OptionsView() {
               onClick={toggle}
               className={`
                 relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none
-                ${isDark ? "bg-purple-600" : "bg-slate-200"}
+                ${isDark ? "bg-violet-600" : "bg-slate-200"}
               `}
             >
               <span className="sr-only">Cambiar modo</span>
@@ -160,13 +160,13 @@ export default function OptionsView() {
         </section>
 
         {/* ─── Cantidad de Decimales ─── */}
-        <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
+        <section className="bg-white/50 dark:bg-zinc-900 backdrop-blur-sm border border-slate-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm">
           <div className="space-y-4">
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-slate-800 dark:text-purple-50">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-violet-50">
                 Cantidad de Decimales
               </h2>
-              <p className="text-sm text-slate-500 dark:text-purple-400/50">
+              <p className="text-sm text-slate-500 dark:text-violet-400/50">
                 Precisión decimal en los resultados
               </p>
             </div>
@@ -180,8 +180,8 @@ export default function OptionsView() {
                     min-w-[2.5rem] h-10 rounded-xl text-sm font-bold transition-all duration-200
                     ${
                       decimals === n
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
-                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                        ? "bg-violet-600 text-white shadow-md shadow-black/10 dark:shadow-black/30"
+                        : "bg-white dark:bg-zinc-900 border border-slate-300 dark:border-zinc-800 text-slate-600 dark:text-violet-400 hover:border-slate-300 dark:hover:border-zinc-700"
                     }
                   `}
                 >
@@ -189,7 +189,7 @@ export default function OptionsView() {
                 </button>
               ))}
             </div>
-            <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
+            <p className="text-[11px] text-slate-400 dark:text-violet-400 italic">
               Valor actual: {decimals} decimales — Ejemplo:{" "}
               {(0.123456789).toFixed(decimals)}
             </p>
@@ -197,13 +197,13 @@ export default function OptionsView() {
         </section>
 
         {/* ─── Tolerancia de Error ─── */}
-        <section className="bg-white/50 dark:bg-purple-950/20 backdrop-blur-sm border border-slate-200 dark:border-purple-900/30 rounded-2xl p-6 shadow-sm">
+        <section className="bg-white/50 dark:bg-zinc-900 backdrop-blur-sm border border-slate-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm">
           <div className="space-y-4">
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-slate-800 dark:text-purple-50">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-violet-50">
                 Tolerancia de Error
               </h2>
-              <p className="text-sm text-slate-500 dark:text-purple-400/50">
+              <p className="text-sm text-slate-500 dark:text-violet-400/50">
                 Umbral de corte para la distribución M/M/1
               </p>
             </div>
@@ -218,8 +218,8 @@ export default function OptionsView() {
                     px-3 h-10 rounded-xl text-sm font-bold transition-all duration-200
                     ${
                       tolerance === opt.value
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
-                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                        ? "bg-violet-600 text-white shadow-md shadow-black/10 dark:shadow-black/30"
+                        : "bg-white dark:bg-zinc-900 border border-slate-300 dark:border-zinc-800 text-slate-600 dark:text-violet-400 hover:border-slate-300 dark:hover:border-zinc-700"
                     }
                   `}
                 >
@@ -228,7 +228,7 @@ export default function OptionsView() {
               ))}
             </div>
 
-            <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
+            <p className="text-[11px] text-slate-400 dark:text-violet-400 italic">
               La tabla se detiene cuando Pn &lt; {tolerance}. Valor más pequeño
               = más filas en la tabla.
             </p>

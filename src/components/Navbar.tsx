@@ -89,10 +89,9 @@ export default function Navbar({ activeView, onNavigate }: NavbarProps) {
   return (
     <nav
       className="sticky bottom-0 z-50
-                    bg-white/95 dark:bg-[#0a040f]/95
-                    backdrop-blur-md
-                    border-t border-slate-200 dark:border-purple-900/40
-                    shadow-[0_-4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_32px_rgba(0,0,0,0.5)]"
+                    bg-white/90 dark:bg-zinc-950/90
+                    backdrop-blur-xl
+                    border-t border-slate-200 dark:border-zinc-800"
     >
       <div className="flex items-center justify-around px-4 pt-2 pb-3">
         {NAV_ITEMS.map((item) => {
@@ -106,17 +105,16 @@ export default function Navbar({ activeView, onNavigate }: NavbarProps) {
                           transition-all duration-150
                           ${
                             active
-                              ? "text-purple-600 dark:text-purple-400"
-                              : "text-slate-400 dark:text-purple-800/70 hover:text-purple-500 dark:hover:text-purple-600"
+                              ? "text-violet-600 dark:text-violet-400"
+                              : "text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300"
                           }`}
               aria-label={item.label}
               aria-current={active ? "page" : undefined}
             >
               {active && (
                 <span
-                  className="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5
-                                 bg-purple-500 dark:bg-purple-400 rounded-full
-                                 shadow-[0_0_8px_2px] shadow-purple-400/50 dark:shadow-purple-500/60"
+                  className="absolute -top-px left-1/2 -translate-x-1/2 w-6 h-0.5
+                                 bg-violet-600 dark:bg-violet-400 rounded-full"
                 />
               )}
               {item.icon(active)}

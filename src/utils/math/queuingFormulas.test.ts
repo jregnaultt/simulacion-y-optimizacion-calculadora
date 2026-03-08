@@ -14,13 +14,13 @@
  * 4. Usamos expect() para verificar que el resultado sea correcto
  *
  * Patrón AAA:
- *   ARRANGE → Preparar datos de entrada
- *   ACT     → Ejecutar la función
- *   ASSERT  → Verificar el resultado
+ * ARRANGE → Preparar datos de entrada
+ * ACT → Ejecutar la función
+ * ASSERT → Verificar el resultado
  *
  * Para ejecutar:
- *   npm run test:run     (una sola vez)
- *   npm test             (modo watch, se re-ejecuta al guardar)
+ * npm run test:run (una sola vez)
+ * npm test (modo watch, se re-ejecuta al guardar)
  */
 
 import { describe, it, expect } from 'vitest';
@@ -43,7 +43,7 @@ import {
 } from './queuingFormulas';
 
 // ╔══════════════════════════════════════════════════════════╗
-// ║              MODELO M/M/1 (Cola Infinita)               ║
+// ║ MODELO M/M/1 (Cola Infinita) ║
 // ╚══════════════════════════════════════════════════════════╝
 
 // describe() agrupa tests relacionados bajo un nombre descriptivo.
@@ -52,12 +52,12 @@ describe('Modelo M/M/1 — Fórmulas básicas', () => {
 
   // ─── Caso de referencia: λ=2, μ=3 ───
   // Valores calculados a mano:
-  //   ρ = 2/3 ≈ 0.6667
-  //   P0 = 1 - 2/3 = 1/3 ≈ 0.3333
-  //   L = 2/(3-2) = 2
-  //   Lq = 4/(3*(3-2)) = 4/3 ≈ 1.3333
-  //   W = 1/(3-2) = 1
-  //   Wq = 2/(3*(3-2)) = 2/3 ≈ 0.6667
+  // ρ = 2/3 ≈ 0.6667
+  // P0 = 1 - 2/3 = 1/3 ≈ 0.3333
+  // L = 2/(3-2) = 2
+  // Lq = 4/(3*(3-2)) = 4/3 ≈ 1.3333
+  // W = 1/(3-2) = 1
+  // Wq = 2/(3*(3-2)) = 2/3 ≈ 0.6667
 
   // it() define UN test individual.
   // El texto describe qué debe cumplirse (en español para que aprendas).
@@ -197,7 +197,7 @@ describe('Modelo M/M/1 — Rango dinámico de distribución', () => {
 });
 
 // ╔══════════════════════════════════════════════════════════╗
-// ║           MODELO M/M/1/K (Cola Finita, K clientes)      ║
+// ║ MODELO M/M/1/K (Cola Finita, K clientes) ║
 // ╚══════════════════════════════════════════════════════════╝
 
 describe('Modelo M/M/1/K — Fórmulas básicas', () => {
@@ -237,8 +237,8 @@ describe('Modelo M/M/1/K — Fórmulas básicas', () => {
 
     // Valor calculado con la fórmula completa:
     // L = ρ/(1-ρ) - (K+1)·ρ^(K+1) / (1-ρ^(K+1))
-    //   = 2.0 - 6·(2/3)^6 / (1-(2/3)^6)
-    //   ≈ 1.4226
+    // = 2.0 - 6·(2/3)^6 / (1-(2/3)^6)
+    // ≈ 1.4226
     expect(resultado).toBeCloseTo(1.4226, 3);
   });
 
@@ -346,7 +346,7 @@ describe('Modelo M/M/1/K — Distribución de probabilidad', () => {
 });
 
 // ╔══════════════════════════════════════════════════════════╗
-// ║           CASO ESPECIAL: ρ = 1 en M/M/1/K              ║
+// ║ CASO ESPECIAL: ρ = 1 en M/M/1/K ║
 // ╚══════════════════════════════════════════════════════════╝
 
 describe('M/M/1/K — Caso especial ρ=1 (λ=μ)', () => {
@@ -388,7 +388,7 @@ describe('M/M/1/K — Caso especial ρ=1 (λ=μ)', () => {
 });
 
 // ╔══════════════════════════════════════════════════════════╗
-// ║               EDGE CASES (Casos límite)                 ║
+// ║ EDGE CASES (Casos límite) ║
 // ╚══════════════════════════════════════════════════════════╝
 
 describe('Edge Cases — Valores extremos y errores', () => {

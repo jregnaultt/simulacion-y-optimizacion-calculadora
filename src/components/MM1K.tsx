@@ -33,11 +33,11 @@ export const MM1K: React.FC = () => {
       return (
         <div
           className="flex flex-col items-center justify-center p-8 text-center
-                        bg-slate-50 dark:bg-purple-950/30
+                        bg-slate-50 dark:bg-zinc-900/30
                         rounded-2xl border border-dashed
-                        border-slate-200 dark:border-purple-900 mt-6"
+                        border-slate-200 dark:border-zinc-800 mt-6"
         >
-          <p className="text-slate-500 dark:text-purple-600 mb-2 font-medium">
+          <p className="text-slate-500 dark:text-violet-600 mb-2 font-medium">
             Los parámetros (λ, μ, K) deben ser mayores a 0.
           </p>
         </div>
@@ -133,11 +133,11 @@ export const MM1K: React.FC = () => {
         </div>
 
         {Pn !== null && (
-          <div className="p-4 bg-purple-50/50 dark:bg-purple-900/20 rounded-2xl border border-purple-100 dark:border-purple-700/50 dark:shadow-md dark:shadow-purple-900/40">
-            <h4 className="text-sm font-medium text-purple-800 dark:text-purple-400 mb-1">
+          <div className="p-4 bg-violet-50/50 dark:bg-zinc-900 rounded-2xl border border-violet-100 dark:border-zinc-800 shadow-sm shadow-black/5 dark:shadow-none">
+            <h4 className="text-sm font-medium text-violet-800 dark:text-violet-400 mb-1">
               Probabilidad de {targetN} clientes en el sistema (Pn)
             </h4>
-            <div className="text-2xl font-bold text-purple-900 dark:text-purple-300">
+            <div className="text-2xl font-bold text-violet-900 dark:text-violet-300">
               {(Pn * 100).toFixed(decimals)}%
             </div>
           </div>
@@ -158,18 +158,18 @@ export const MM1K: React.FC = () => {
   return (
     <div className="flex flex-col h-full animate-[fadeSlideUp_0.3s_ease_both]">
       <div className="mb-6 space-y-4">
-        <p className="text-slate-500 dark:text-purple-400 text-sm leading-relaxed">
+        <p className="text-slate-500 dark:text-violet-400 text-sm leading-relaxed">
           Modelo de un servidor con{" "}
-          <span className="font-semibold text-slate-700 dark:text-purple-300">
+          <span className="font-semibold text-slate-700 dark:text-violet-300">
             capacidad finita (K) en el sistema
           </span>
           . Tiempos exponenciales. Se asume que los clientes rechazados se
           pierden.
         </p>
 
-        <div className="bg-white dark:bg-[#12091c] rounded-2xl border border-slate-200 dark:border-purple-900/60 shadow-sm dark:shadow-black/40 overflow-hidden">
-          <div className="p-4 border-b border-slate-100 dark:border-purple-900/40 bg-slate-50/50 dark:bg-[#0a040f]/60">
-            <h2 className="text-sm font-semibold text-slate-700 dark:text-purple-400 uppercase tracking-wider">
+        <div className="bg-white dark:bg-zinc-950 rounded-2xl border border-slate-200 dark:border-zinc-800/60 shadow-sm dark:shadow-black/40 overflow-hidden">
+          <div className="p-4 border-b border-slate-100 dark:border-zinc-800/40 bg-slate-50/50 dark:bg-[#0a040f]/60">
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-violet-400 uppercase tracking-wider">
               Parámetros de Entrada
             </h2>
           </div>
@@ -178,7 +178,7 @@ export const MM1K: React.FC = () => {
               <div>
                 <label
                   htmlFor="mm1k-lambda"
-                  className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1"
+                  className="block text-sm font-medium text-slate-700 dark:text-violet-400 mb-1"
                 >
                   Tasa de Llegada (λ)
                 </label>
@@ -188,12 +188,12 @@ export const MM1K: React.FC = () => {
                   inputMode="decimal"
                   min="0"
                   step="any"
-                  className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
-                                 bg-slate-50 dark:bg-[#0e0715]
-                                 text-slate-900 dark:text-purple-50
-                                 placeholder:text-slate-400 dark:placeholder:text-purple-800
-                                 focus:border-purple-500 dark:focus:border-purple-500/80
-                                 focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                  className="block w-full rounded-xl border border-slate-300 dark:border-zinc-800
+                                 bg-slate-50 dark:bg-zinc-900
+                                 text-slate-900 dark:text-violet-50
+                                 placeholder:text-slate-400 dark:placeholder:text-violet-400/50
+                                 focus:border-violet-500 dark:focus:border-violet-500/80
+                                 focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-500/15
                                  dark:focus:bg-[#140a20]
                                  outline-none text-sm p-2 transition-all"
                   placeholder="Ej. 2 clientes/hora"
@@ -224,7 +224,7 @@ export const MM1K: React.FC = () => {
               <div>
                 <label
                   htmlFor="mm1k-mu"
-                  className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1"
+                  className="block text-sm font-medium text-slate-700 dark:text-violet-400 mb-1"
                 >
                   Tasa de Servicio (μ)
                 </label>
@@ -234,12 +234,12 @@ export const MM1K: React.FC = () => {
                   inputMode="decimal"
                   min="0"
                   step="any"
-                  className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
-                                 bg-slate-50 dark:bg-[#0e0715]
-                                 text-slate-900 dark:text-purple-50
-                                 placeholder:text-slate-400 dark:placeholder:text-purple-800
-                                 focus:border-purple-500 dark:focus:border-purple-500/80
-                                 focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                  className="block w-full rounded-xl border border-slate-300 dark:border-zinc-800
+                                 bg-slate-50 dark:bg-zinc-900
+                                 text-slate-900 dark:text-violet-50
+                                 placeholder:text-slate-400 dark:placeholder:text-violet-400/50
+                                 focus:border-violet-500 dark:focus:border-violet-500/80
+                                 focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-500/15
                                  dark:focus:bg-[#140a20]
                                  outline-none text-sm p-2 transition-all"
                   placeholder="Ej. 3 clientes/hora"
@@ -269,7 +269,7 @@ export const MM1K: React.FC = () => {
             <div>
               <label
                 htmlFor="mm1k-k"
-                className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1"
+                className="block text-sm font-medium text-slate-700 dark:text-violet-400 mb-1"
               >
                 Capacidad del Sistema (K)
               </label>
@@ -279,12 +279,12 @@ export const MM1K: React.FC = () => {
                 inputMode="numeric"
                 min="1"
                 step="1"
-                className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
-                           bg-slate-50 dark:bg-[#0e0715]
-                           text-slate-900 dark:text-purple-100
-                           placeholder:text-slate-400 dark:placeholder:text-purple-900
-                           focus:border-purple-500 dark:focus:border-purple-500/80
-                           focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                className="block w-full rounded-xl border border-slate-300 dark:border-zinc-800
+                           bg-slate-50 dark:bg-zinc-900
+                           text-slate-900 dark:text-violet-100
+                           placeholder:text-slate-400 dark:placeholder:text-violet-400/50
+                           focus:border-violet-500 dark:focus:border-violet-500/80
+                           focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-500/15
                            dark:focus:bg-[#140a20]
                            outline-none text-sm p-2 transition-all"
                 placeholder="Límite en el sistema (cola + servidor)"
@@ -310,15 +310,15 @@ export const MM1K: React.FC = () => {
                   }
                 }}
               />
-              <p className="text-[10px] text-slate-400 dark:text-purple-800 mt-1 pl-1">
+              <p className="text-[10px] text-slate-400 dark:text-violet-400 mt-1 pl-1">
                 Incluye a la persona siendo atendida y las que esperan.
               </p>
             </div>
 
-            <div className="pt-2 border-t border-slate-100 dark:border-purple-900/30">
+            <div className="pt-2 border-t border-slate-100 dark:border-zinc-800">
               <label
                 htmlFor="mm1k-pn"
-                className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1"
+                className="block text-sm font-medium text-slate-700 dark:text-violet-400 mb-1"
               >
                 Prob. de 'n' clientes (opcional)
               </label>
@@ -328,12 +328,12 @@ export const MM1K: React.FC = () => {
                 inputMode="numeric"
                 min="0"
                 step="1"
-                className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
-                           bg-slate-50 dark:bg-[#0e0715]
-                           text-slate-900 dark:text-purple-100
-                           placeholder:text-slate-400 dark:placeholder:text-purple-900
-                           focus:border-purple-500 dark:focus:border-purple-500/80
-                           focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
+                className="block w-full rounded-xl border border-slate-300 dark:border-zinc-800
+                           bg-slate-50 dark:bg-zinc-900
+                           text-slate-900 dark:text-violet-100
+                           placeholder:text-slate-400 dark:placeholder:text-violet-400/50
+                           focus:border-violet-500 dark:focus:border-violet-500/80
+                           focus:ring-2 focus:ring-violet-500/20 dark:focus:ring-violet-500/15
                            dark:focus:bg-[#140a20]
                            outline-none text-sm p-2 transition-all"
                 placeholder="Ej. 2 clientes en sistema"
@@ -365,7 +365,7 @@ export const MM1K: React.FC = () => {
       </div>
 
       <div className="flex-1 pb-4">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-purple-50 mb-2">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-violet-50 mb-2">
           Resultados
         </h2>
         {renderResults()}

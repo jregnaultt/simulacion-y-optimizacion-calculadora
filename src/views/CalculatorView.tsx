@@ -63,15 +63,15 @@ export default function CalculatorView() {
   const current = OPTIONS.find((o) => o.value === selected);
 
   return (
-    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-50">
+    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-violet-50">
       {/* ─── Header ─── */}
       <header
-        className="bg-slate-100 dark:bg-[#12091c]
-                         border-b border-slate-200 dark:border-purple-900/50
+        className="bg-slate-100 dark:bg-zinc-950
+                         border-b border-slate-200 dark:border-zinc-800
                          px-5 py-4"
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400">
+          <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-zinc-800 flex items-center justify-center text-violet-600 dark:text-violet-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -89,7 +89,7 @@ export default function CalculatorView() {
           </div>
           <div>
             <h1 className="text-[1.1rem] font-bold">Análisis de Servidores</h1>
-            <p className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
+            <p className="text-[0.72rem] text-violet-600 dark:text-violet-500 font-medium">
               Configuración del modelo matemático
             </p>
           </div>
@@ -100,7 +100,7 @@ export default function CalculatorView() {
       <div className="px-5 pt-6 pb-2">
         <label
           className="block text-[0.7rem] font-bold uppercase tracking-[1.5px]
-                          text-purple-600 dark:text-purple-600 mb-2"
+                          text-violet-600 dark:text-violet-600 mb-2"
         >
           Tipo de servidor
         </label>
@@ -111,32 +111,32 @@ export default function CalculatorView() {
             type="button"
             onClick={() => setOpen((prev) => !prev)}
             className="w-full flex items-center justify-between
-                       bg-white dark:bg-[#0e0715]
-                       border border-slate-300 dark:border-purple-800/70
+                       bg-white dark:bg-zinc-900
+                       border border-slate-300 dark:border-zinc-800
                        rounded-xl px-4 py-3
                        text-left transition-all duration-150
-                       hover:border-purple-500 dark:hover:border-purple-600/80
-                       dark:hover:bg-[#140a20]
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/40"
+                       hover:border-slate-300 dark:hover:border-zinc-700
+                       dark:hover:bg-zinc-800
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/20"
             aria-haspopup="listbox"
             aria-expanded={open}
           >
             {current ? (
               <span className="flex items-center gap-3">
-                <span className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 p-1.5 rounded-md">
+                <span className="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-zinc-800 p-1.5 rounded-md">
                   {current.icon}
                 </span>
                 <span className="flex flex-col">
-                  <span className="text-sm font-semibold text-slate-900 dark:text-purple-50">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-violet-50">
                     {current.label}
                   </span>
-                  <span className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
+                  <span className="text-[0.72rem] text-violet-600 dark:text-violet-500 font-medium">
                     {current.subtitle}
                   </span>
                 </span>
               </span>
             ) : (
-              <span className="text-sm text-slate-400 dark:text-purple-700 font-medium">
+              <span className="text-sm text-slate-400 dark:text-violet-700 font-medium">
                 Seleccione un modelo matemático...
               </span>
             )}
@@ -146,7 +146,7 @@ export default function CalculatorView() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className={`w-5 h-5 text-slate-400 dark:text-purple-700 flex-shrink-0
+              className={`w-5 h-5 text-slate-400 dark:text-violet-700 flex-shrink-0
                           transition-transform duration-200 ${open ? "rotate-180" : ""}`}
             >
               <path
@@ -162,10 +162,10 @@ export default function CalculatorView() {
             <ul
               role="listbox"
               className="absolute z-10 top-full mt-2 left-0 right-0
-                         bg-white dark:bg-[#0e0715]
-                         border border-slate-200 dark:border-purple-800/60
+                         bg-white dark:bg-zinc-900
+                         border border-slate-200 dark:border-zinc-800
                          rounded-xl overflow-hidden
-                         shadow-xl shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)]"
+                         shadow-md shadow-black/5 dark:shadow-none border dark:border-zinc-800"
             >
               {OPTIONS.map((opt) => (
                 <li
@@ -183,23 +183,23 @@ export default function CalculatorView() {
                                 transition-colors duration-100
                                 ${
                                   selected === opt.value
-                                    ? "bg-purple-50 dark:bg-purple-900/40"
-                                    : "hover:bg-slate-50 dark:hover:bg-purple-900/20"
+                                    ? "bg-violet-50 dark:bg-zinc-800"
+                                    : "hover:bg-slate-50 dark:hover:bg-zinc-800"
                                 }`}
                   >
-                    <span className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 p-1.5 rounded-md">
+                    <span className="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-zinc-800 p-1.5 rounded-md">
                       {opt.icon}
                     </span>
                     <span className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-900 dark:text-purple-50">
+                      <span className="text-sm font-semibold text-slate-900 dark:text-violet-50">
                         {opt.label}
                       </span>
-                      <span className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
+                      <span className="text-[0.72rem] text-violet-600 dark:text-violet-500 font-medium">
                         {opt.subtitle}
                       </span>
                     </span>
                     {selected === opt.value && (
-                      <span className="ml-auto text-purple-600 dark:text-purple-400">
+                      <span className="ml-auto text-violet-600 dark:text-violet-400">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -228,7 +228,7 @@ export default function CalculatorView() {
       <div className="flex-1 px-5 pt-4 pb-4">
         {!selected && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-center py-16">
-            <div className="w-16 h-16 rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-300 dark:text-purple-800/80 mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-900/50 flex items-center justify-center text-zinc-400 dark:text-zinc-600 mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -244,7 +244,7 @@ export default function CalculatorView() {
                 />
               </svg>
             </div>
-            <p className="text-sm text-slate-500 dark:text-purple-700 font-medium">
+            <p className="text-sm text-slate-500 dark:text-violet-700 font-medium">
               Seleccione un modelo matemático para iniciar el análisis
             </p>
           </div>
