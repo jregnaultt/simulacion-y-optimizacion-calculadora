@@ -6,7 +6,7 @@ import HomeView from './views/HomeView';
 import CalculatorView from './views/CalculatorView';
 import OptionsView from './views/OptionsView';
 
-type ActiveView = 'home' | 'calculator' | 'options';
+export type ActiveView = 'home' | 'calculator' | 'options';
 
 function AppContent() {
   const [activeView, setActiveView] = useState<ActiveView>('home');

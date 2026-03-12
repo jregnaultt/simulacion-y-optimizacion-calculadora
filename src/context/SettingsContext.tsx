@@ -29,12 +29,20 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const clamped = Math.max(1, Math.min(8, Math.round(n)));
     setDecimalsState(clamped);
     localStorage.setItem("lambdapro-decimals", String(clamped));
+    // Sync: tolerance = 10^(-decimals)
+    const syncedTol = Math.pow(10, -clamped);
+    setToleranceState(syncedTol);
+    localStorage.setItem("lambdapro-tolerance", String(syncedTol));
   };
 
   const setTolerance = (t: number) => {
     if (t >= TOLERANCE_MIN && t <= TOLERANCE_MAX) {
       setToleranceState(t);
       localStorage.setItem("lambdapro-tolerance", String(t));
+      // Sync: decimals = -log10(tolerance)
+      const syncedDec = Math.max(1, Math.min(8, Math.round(-Math.log10(t))));
+      setDecimalsState(syncedDec);
+      localStorage.setItem("lambdapro-decimals", String(syncedDec));
     }
   };
 
@@ -42,6 +50,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     setToleranceState((prev) => {
       const next = Math.min(TOLERANCE_MAX, prev * 10);
       localStorage.setItem("lambdapro-tolerance", String(next));
+      // Sync decimals
+      const syncedDec = Math.max(1, Math.min(8, Math.round(-Math.log10(next))));
+      setDecimalsState(syncedDec);
+      localStorage.setItem("lambdapro-decimals", String(syncedDec));
       return next;
     });
   }, []);
@@ -50,6 +62,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     setToleranceState((prev) => {
       const next = Math.max(TOLERANCE_MIN, prev / 10);
       localStorage.setItem("lambdapro-tolerance", String(next));
+      // Sync decimals
+      const syncedDec = Math.max(1, Math.min(8, Math.round(-Math.log10(next))));
+      setDecimalsState(syncedDec);
+      localStorage.setItem("lambdapro-decimals", String(syncedDec));
       return next;
     });
   }, []);

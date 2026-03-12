@@ -1,6 +1,7 @@
 import React from 'react';
 import { calcPn_MM1K } from '../utils/math/queuingFormulas';
 import { useSettings } from '../context/SettingsContext';
+import { formatSmart } from '../utils/formatSmart';
 
 interface DistMM1KProps {
     rho: number;
@@ -9,6 +10,7 @@ interface DistMM1KProps {
 
 export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
     const { decimals } = useSettings();
+    const tolerance = Math.pow(10, -decimals);
 
     // --- Guarda defensiva: ρ debe ser positivo ---
     // Nota: M/M/1/K puede ser estable con ρ >= 1, solo ρ <= 0 es inválido
@@ -17,7 +19,7 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
             <div className="flex flex-col items-center w-full">
                 <div className="w-full bg-white dark:bg-[#12091c] rounded-2xl border border-amber-300 dark:border-amber-700/60 shadow-sm p-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     <p className="text-sm text-amber-700 dark:text-amber-400 font-medium text-center">
-                        ⚠️ El factor de utilización (ρ = {rho.toFixed(decimals)}) debe ser mayor que 0
+                        ⚠️ El factor de utilización (ρ = {formatSmart(rho, decimals)}) debe ser mayor que 0
                         para calcular la distribución M/M/1/K.
                     </p>
                 </div>
@@ -25,16 +27,17 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
         );
     }
 
-    // Generamos el array de n desde 0 hasta K
-    const nValues = Array.from({ length: k + 1 }, (_, i) => i);
-
-    // Calculamos Pn y acumulados Fn
+    // Generamos Pn desde 0 hasta K, con corte cuando Fn ≈ 1
+    const items: { n: number; pn: number; fn: number }[] = [];
     let cumulative = 0;
-    const items = nValues.map(n => {
+
+    for (let n = 0; n <= k; n++) {
         const pn = calcPn_MM1K(rho, k, n);
         cumulative += pn;
-        return { n, pn, fn: cumulative };
-    });
+        items.push({ n, pn, fn: cumulative });
+        // Corte anticipado cuando probabilidad acumulada ≈ 1
+        if (n > 0 && 1 - cumulative < tolerance) break;
+    }
 
     // Pn máximo para escalar las barras de progreso
     const maxPn = Math.max(...items.map(i => i.pn));
@@ -58,7 +61,7 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
                                 <tr key={item.n} className="hover:bg-slate-50/50 dark:hover:bg-purple-900/10 transition-colors">
                                     <td className="py-2.5 px-3 text-sm font-bold text-slate-900 dark:text-purple-50 text-center">{item.n}</td>
                                     <td className="py-2.5 px-4 text-sm font-medium text-slate-600 dark:text-purple-300 text-center tabular-nums">
-                                        {item.pn.toFixed(decimals)}
+                                        {formatSmart(item.pn, decimals)}
                                         {/* Mini barra de progreso proporcional a Pn */}
                                         <div className="mt-1 h-1.5 w-full bg-slate-100 dark:bg-purple-950/60 rounded-full overflow-hidden">
                                             <div
@@ -68,7 +71,7 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
                                         </div>
                                     </td>
                                     <td className="py-2.5 px-4 text-sm font-medium text-slate-600 dark:text-purple-300 text-center tabular-nums">
-                                        {Math.min(1, item.fn).toFixed(decimals)}
+                                        {formatSmart(Math.min(1, item.fn), decimals)}
                                     </td>
                                 </tr>
                             ))}
@@ -76,7 +79,7 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
                             <tr className="bg-slate-50/80 dark:bg-purple-950/40 border-t-2 border-slate-200 dark:border-purple-800/60">
                                 <td className="py-2.5 px-3 text-sm font-bold text-slate-900 dark:text-purple-50 text-center">Σ</td>
                                 <td className="py-2.5 px-4 text-sm font-bold text-slate-900 dark:text-purple-200 text-center tabular-nums">
-                                    {totalPn.toFixed(decimals)}
+                                    {formatSmart(totalPn, decimals)}
                                 </td>
                                 <td className="py-2.5 px-4 text-sm font-medium text-slate-400 dark:text-purple-700 text-center italic">
                                     —

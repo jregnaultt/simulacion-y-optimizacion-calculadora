@@ -13,6 +13,7 @@ import {
 import { ResultCard } from "./ResultCard";
 import { DistMM1K } from "./DistMM1K";
 import { useSettings } from "../context/SettingsContext";
+import { formatSmart } from "../utils/formatSmart";
 
 export const MM1K: React.FC = () => {
   const { decimals } = useSettings();
@@ -138,7 +139,7 @@ export const MM1K: React.FC = () => {
               Probabilidad de {targetN} clientes en el sistema (Pn)
             </h4>
             <div className="text-2xl font-bold text-purple-900 dark:text-purple-300">
-              {(Pn * 100).toFixed(decimals)}%
+              {formatSmart(Pn * 100, decimals)}%
             </div>
           </div>
         )}

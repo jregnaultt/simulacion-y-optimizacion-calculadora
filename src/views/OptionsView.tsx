@@ -190,8 +190,7 @@ export default function OptionsView() {
               ))}
             </div>
             <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
-              Valor actual: {decimals} decimales — Ejemplo:{" "}
-              {(0.123456789).toFixed(decimals)}
+              Valor actual: {decimals} decimales — Tolerancia sincronizada: {Math.pow(10, -decimals)}
             </p>
           </div>
         </section>
@@ -229,8 +228,8 @@ export default function OptionsView() {
             </div>
 
             <p className="text-[11px] text-slate-400 dark:text-purple-800 italic">
-              La tabla se detiene cuando Pn &lt; {tolerance}. Valor más pequeño
-              = más filas en la tabla.
+              La tabla se detiene cuando 1 - Fn &lt; {tolerance}. Cambiar esto
+              ajusta automáticamente los decimales.
             </p>
           </div>
         </section>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSettings } from '../context/SettingsContext';
+import { formatSmart } from '../utils/formatSmart';
 
 interface ResultCardProps {
   title: string;
@@ -45,7 +46,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
           : 'text-slate-900 dark:text-purple-100'
         }`}>
         {typeof value === 'number'
-          ? Number.isInteger(value) ? value : value.toFixed(decimals)
+          ? formatSmart(value, decimals)
           : value}
       </div>
       <p className="text-xs text-slate-400 dark:text-purple-700/80">{description}</p>
