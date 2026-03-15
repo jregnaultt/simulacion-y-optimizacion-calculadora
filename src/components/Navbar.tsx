@@ -5,7 +5,7 @@ interface NavbarProps {
     onNavigate: (view: 'home' | 'calculator' | 'options') => void;
 }
 
-function HomeIcon({ active }: { active: boolean }) {
+/* function HomeIcon({ active }: { active: boolean }) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
             fill={active ? 'currentColor' : 'none'}
@@ -15,7 +15,7 @@ function HomeIcon({ active }: { active: boolean }) {
                 d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
         </svg>
     );
-}
+} */
 
 function CalculatorIcon({ active }: { active: boolean }) {
     return (
@@ -47,19 +47,19 @@ const NAV_ITEMS: Array<{
     view: 'home' | 'calculator' | 'options';
     icon: (active: boolean) => React.ReactElement;
 }> = [
-        { label: 'Inicio', view: 'home', icon: (a) => <HomeIcon active={a} /> },
-        { label: 'Calculadora', view: 'calculator', icon: (a) => <CalculatorIcon active={a} /> },
-        { label: 'Opciones', view: 'options', icon: (a) => <SettingsIcon active={a} /> },
-    ];
+    // { label: 'Inicio', view: 'home', icon: (a) => <HomeIcon active={a} /> },
+    { label: 'Calculadora', view: 'calculator', icon: (a) => <CalculatorIcon active={a} /> },
+    { label: 'Opciones', view: 'options', icon: (a) => <SettingsIcon active={a} /> },
+];
 
 export default function Navbar({ activeView, onNavigate }: NavbarProps) {
     return (
         <nav className="sticky bottom-0 z-50
-                    bg-white/95 dark:bg-[#060e08]/95
+                    bg-white/95 dark:bg-[#080510]/95
                     backdrop-blur-md
-                    border-t border-slate-200 dark:border-emerald-900/40
+                    border-t border-slate-200 dark:border-purple-900/40
                     shadow-[0_-4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_32px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center justify-around px-4 pt-2 pb-3">
+            <div className="flex items-center justify-around px-4 pt-1 pb-1.5">
 
                 {NAV_ITEMS.map((item) => {
                     const active = activeView === item.view;
@@ -71,16 +71,16 @@ export default function Navbar({ activeView, onNavigate }: NavbarProps) {
                             className={`relative flex flex-col items-center gap-1 px-5 py-1.5 rounded-xl
                           transition-all duration-150
                           ${active
-                                    ? 'text-emerald-600 dark:text-emerald-400'
-                                    : 'text-slate-400 dark:text-emerald-800/70 hover:text-emerald-500 dark:hover:text-emerald-600'
+                                    ? 'text-purple-600 dark:text-purple-400'
+                                    : 'text-slate-400 dark:text-purple-800/70 hover:text-purple-500 dark:hover:text-purple-600'
                                 }`}
                             aria-label={item.label}
                             aria-current={active ? 'page' : undefined}
                         >
                             {active && (
                                 <span className="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5
-                                 bg-emerald-500 dark:bg-emerald-400 rounded-full
-                                 shadow-[0_0_8px_2px] shadow-emerald-400/50 dark:shadow-emerald-500/60" />
+                                 bg-purple-500 dark:bg-purple-400 rounded-full
+                                 shadow-[0_0_8px_2px] shadow-purple-400/50 dark:shadow-purple-500/60" />
                             )}
                             {item.icon(active)}
                             <span className="text-[0.65rem] font-semibold tracking-wide">

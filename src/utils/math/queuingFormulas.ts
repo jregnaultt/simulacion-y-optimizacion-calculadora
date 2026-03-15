@@ -58,3 +58,126 @@ export const calcWq_MM1K = (w: number, mu: number): number => {
 export const calcLq_MM1K = (lambdaE: number, wq: number): number => {
   return lambdaE * wq;
 };
+
+// --- M/M/c Model ---
+export const calcRho_MMC = (lambda: number, mu: number, c: number): number => lambda / (c * mu);
+
+export const calcP0_MMC = (lambda: number, mu: number, c: number): number => {
+  const r = lambda / mu;
+  const rho = calcRho_MMC(lambda, mu, c);
+  let sum = 0;
+  for (let n = 0; n < c; n++) {
+    sum += Math.pow(r, n) / factorial(n);
+  }
+  const lastTerm = Math.pow(r, c) / (factorial(c) * (1 - rho));
+  return 1 / (sum + lastTerm);
+};
+
+export const calcLq_MMC = (lambda: number, mu: number, c: number, p0: number): number => {
+  const r = lambda / mu;
+  const rho = calcRho_MMC(lambda, mu, c);
+  const numerator = p0 * Math.pow(r, c) * rho;
+  const denominator = factorial(c) * Math.pow(1 - rho, 2);
+  return numerator / denominator;
+};
+
+export const calcL_MMC = (lambda: number, mu: number, lq: number): number => {
+  return lq + (lambda / mu);
+};
+
+export const calcWq_MMC = (lambda: number, lq: number): number => {
+  return lq / lambda;
+};
+
+export const calcW_MMC = (mu: number, wq: number): number => {
+  return wq + (1 / mu);
+};
+
+export const calcPw_MMC = (lambda: number, mu: number, c: number, p0: number): number => {
+  const r = lambda / mu;
+  const rho = calcRho_MMC(lambda, mu, c);
+  return (Math.pow(r, c) * p0) / (factorial(c) * (1 - rho));
+};
+
+export const calcPn_MMC = (lambda: number, mu: number, c: number, n: number, p0: number): number => {
+  const r = lambda / mu;
+  if (n <= c) {
+    return (Math.pow(r, n) / factorial(n)) * p0;
+  } else {
+    return (Math.pow(r, n) / (factorial(c) * Math.pow(c, n - c))) * p0;
+  }
+};
+
+
+// --- M/M/c/N Model ---
+export const calcP0_MMCN = (lambda: number, mu: number, c: number, N: number): number => {
+  const r = lambda / mu;
+  const rho = lambda / (c * mu);
+  let sum = 0;
+  for (let n = 0; n <= c; n++) {
+    sum += Math.pow(r, n) / factorial(n);
+  }
+  if (rho === 1) {
+    sum += (Math.pow(r, c) / factorial(c)) * (N - c);
+  } else {
+    for (let n = c + 1; n <= N; n++) {
+      sum += (Math.pow(r, c) / factorial(c)) * Math.pow(rho, n - c);
+    }
+  }
+  return 1 / sum;
+};
+
+export const calcPn_MMCN = (lambda: number, mu: number, c: number, N: number, n: number, p0: number): number => {
+  if (n > N) return 0;
+  const r = lambda / mu;
+  if (n <= c) {
+    return (Math.pow(r, n) / factorial(n)) * p0;
+  } else {
+    const rho = lambda / (c * mu);
+    return (Math.pow(r, c) / factorial(c)) * Math.pow(rho, n - c) * p0;
+  }
+};
+
+export const calcL_MMCN = (lambda: number, mu: number, c: number, N: number, p0: number): number => {
+  let sum = 0;
+  for (let n = 1; n <= N; n++) {
+    sum += n * calcPn_MMCN(lambda, mu, c, N, n, p0);
+  }
+  return sum;
+};
+
+export const calcLq_MMCN = (lambda: number, mu: number, c: number, N: number, p0: number): number => {
+  let sum = 0;
+  for (let n = c + 1; n <= N; n++) {
+    sum += (n - c) * calcPn_MMCN(lambda, mu, c, N, n, p0);
+  }
+  return sum;
+};
+
+export const calcLambdaE_MMCN = (lambda: number, mu: number, c: number, N: number, p0: number): number => {
+  const pN = calcPn_MMCN(lambda, mu, c, N, N, p0);
+  return lambda * (1 - pN);
+};
+
+export const calcLambdaLost_MMCN = (lambda: number, mu: number, c: number, N: number, p0: number): number => {
+  const pN = calcPn_MMCN(lambda, mu, c, N, N, p0);
+  return lambda * pN;
+};
+
+export const calcW_MMCN = (l: number, lambdaE: number): number => {
+  return l / lambdaE;
+};
+
+export const calcWq_MMCN = (w: number, mu: number): number => {
+  return w - (1 / mu);
+};
+
+// --- Helper Functions ---
+const factorial = (n: number): number => {
+  if (n === 0 || n === 1) return 1;
+  let result = 1;
+  for (let i = 2; i <= n; i++) {
+    result *= i;
+  }
+  return result;
+};

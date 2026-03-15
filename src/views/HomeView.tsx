@@ -1,3 +1,4 @@
+import { useTheme } from '../context/ThemeContext';
 
 interface HomeViewProps {
     onNavigate: (view: 'calculator') => void;
@@ -5,130 +6,107 @@ interface HomeViewProps {
 
 export default function HomeView({ onNavigate }: HomeViewProps) {
     return (
-        <div className="flex flex-col min-h-dvh text-slate-900 dark:text-emerald-50">
+        <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-50 animate-[fadeSlideUp_0.3s_ease_both]">
 
             {/* ═══════════ HEADER ═══════════ */}
-            <header className="bg-gradient-to-b from-emerald-100 to-slate-50
-                         dark:from-emerald-950 dark:to-[#080f0b]
-                         border-b border-emerald-200 dark:border-emerald-900">
+            <header className="bg-gradient-to-b from-purple-100 to-slate-50
+                         dark:from-purple-950 dark:to-[#080510]
+                         border-b border-purple-200 dark:border-purple-900">
                 <div className="flex flex-col items-center gap-4 px-6 pt-14 pb-10">
 
-                    {/* Logo */}
-                    <div className="w-20 h-20 rounded-[22px]
-                          bg-gradient-to-br from-emerald-500 to-emerald-700
-                          flex items-center justify-center text-[2.2rem]
-                          shadow-lg shadow-emerald-300/50 dark:shadow-emerald-900/60
-                          animate-[float_3s_ease-in-out_infinite]">
-                        📡
+                    {/* Logo replacement with Stylized Rho */}
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 
+                                flex items-center justify-center shadow-xl shadow-purple-900/40 border-2 border-white/20
+                                animate-[float_3s_ease-in-out_infinite]">
+                        <span className="text-white font-serif italic text-4xl -mt-1 shadow-sm">ρ</span>
                     </div>
 
                     {/* Texto */}
                     <div className="text-center">
                         <h1 className="text-[1.8rem] font-extrabold tracking-tight">
-                            SimuladoPRO
+                            Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
                         </h1>
-                        <p className="text-[0.7rem] font-semibold text-emerald-600 dark:text-emerald-400
-                          uppercase tracking-[1.5px] mt-2">
+                        <p className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-400
+                                uppercase tracking-[1.5px] mt-2">
                             Teoría de Colas · Análisis de Servidores
                         </p>
                     </div>
-
                 </div>
             </header>
 
             {/* ═══════════ CONTENIDO ═══════════ */}
-            <div className="flex flex-col flex-1 px-5 py-8 gap-8">
-
-                {/* Bienvenida */}
-                <div className="flex flex-col gap-3">
-                    <h2 className="text-[1.4rem] font-bold">¡Bienvenido! 👋</h2>
-                    <p className="text-[0.9rem] text-slate-600 dark:text-emerald-300 leading-relaxed">
-                        Herramienta de simulación para analizar sistemas de colas.
-                        Calcula métricas de rendimiento para servidores con y sin límite de cola.
+            <main className="flex-1 max-w-2xl mx-auto px-5 py-8 space-y-8">
+                
+                {/* Intro */}
+                <section className="space-y-3">
+                    <h2 className="text-xl font-bold text-slate-800 dark:text-purple-100">
+                        Optimiza tus sistemas de servicio
+                    </h2>
+                    <p className="text-sm text-slate-500 dark:text-purple-400/70 leading-relaxed">
+                        Analiza colas de espera con precisión matemática. 
+                        Calcula tiempos promedio, niveles de ocupación y probabilidades para tomar decisiones informadas.
                     </p>
-                </div>
+                </section>
 
-                {/* Separador */}
-                <div className="h-px w-full bg-slate-200 dark:bg-emerald-900" />
-
-                {/* Acceso rápido */}
-                <div className="flex flex-col gap-4">
-                    <p className="text-[0.7rem] font-bold text-emerald-600 dark:text-emerald-600
-                        uppercase tracking-[1.5px]">
-                        Acceso rápido
-                    </p>
-
-                    {/* Botón card */}
+                {/* Acceso Rápido */}
+                <div className="grid grid-cols-1 gap-4">
                     <button
-                        type="button"
                         onClick={() => onNavigate('calculator')}
-                        className="group w-full text-left
-                       bg-white dark:bg-emerald-950
-                       border border-emerald-300 dark:border-emerald-800
-                       rounded-2xl
-                       transition-all duration-200
-                       hover:border-emerald-500 dark:hover:border-emerald-600
-                       hover:-translate-y-0.5
-                       hover:shadow-xl hover:shadow-emerald-100 dark:hover:shadow-black/50
-                       active:scale-[0.99]
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                        className="group relative flex items-center gap-5 p-6 bg-white dark:bg-[#12091c] rounded-2xl
+                                 border border-slate-200 dark:border-purple-900/40 shadow-sm
+                                 hover:border-purple-400 dark:hover:border-purple-500/60 transition-all duration-300
+                                 text-left overflow-hidden translate-y-0 hover:-translate-y-1"
                     >
-                        <div className="p-5 flex flex-col gap-4">
-
-                            {/* Fila: ícono + badge */}
+                        <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span className="text-4xl">📊</span>
+                        </div>
+                        
+                        <div className="w-16 h-16 rounded-xl bg-purple-100 dark:bg-purple-900/40 
+                                     flex items-center justify-center text-3xl
+                                     group-hover:scale-110 transition-transform">
+                            🧮
+                        </div>
+                        
+                        <div className="space-y-1 flex-1">
                             <div className="flex items-center justify-between">
-                                <div className="w-12 h-12 rounded-xl
-                                bg-emerald-100 dark:bg-emerald-900
-                                flex items-center justify-center text-2xl">
-                                    🖥️
-                                </div>
-                                <span className="text-[0.65rem] font-bold uppercase tracking-wide
-                                 text-emerald-600 dark:text-emerald-400
-                                 bg-emerald-50 dark:bg-emerald-950
-                                 border border-emerald-300 dark:border-emerald-800
-                                 px-3 py-1 rounded-full">
-                                    Calculadora
-                                </span>
-                            </div>
-
-                            {/* Textos */}
-                            <div className="flex flex-col gap-1.5">
-                                <h3 className="text-[1.1rem] font-bold">
-                                    Cálculo de Servidores
+                                <h3 className="text-lg font-bold text-slate-800 dark:text-purple-100 group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                                    Calculadora de Colas
                                 </h3>
-                                <p className="text-[0.8rem] font-semibold text-emerald-600 dark:text-emerald-500">
-                                    Cola limitada &amp; Cola ilimitada
-                                </p>
-                                <p className="text-[0.85rem] text-slate-600 dark:text-emerald-300 leading-relaxed">
-                                    Ingresa los parámetros del sistema y obtén métricas clave:
-                                    utilización, clientes en espera y tiempo promedio en cola.
-                                </p>
+                                <span className="text-purple-600 dark:text-purple-400 transition-transform group-hover:translate-x-1">→</span>
                             </div>
-
-                            {/* Footer del card */}
-                            <div className="flex items-center justify-between
-                              pt-4 border-t border-slate-200 dark:border-emerald-800/60">
-                                <span className="text-[0.85rem] font-semibold text-emerald-600 dark:text-emerald-400">
-                                    Abrir calculadora
-                                </span>
-                                <span className="text-emerald-600 dark:text-emerald-500 text-lg
-                                 transition-transform duration-200 group-hover:translate-x-1">
-                                    →
-                                </span>
-                            </div>
-
+                            <p className="text-sm text-slate-500 dark:text-purple-400/60 font-medium">
+                                Modelos M/M/1, M/M/1/K, M/M/c y M/M/c/N
+                            </p>
+                            <p className="text-xs text-slate-400 dark:text-purple-600/70 mt-2 leading-relaxed">
+                                Ingresa tasas de llegada, servicio y servidores para obtener métricas de utilización y tiempos de espera.
+                            </p>
                         </div>
                     </button>
+                    
+                    <div className="p-6 bg-purple-50/50 dark:bg-purple-950/20 rounded-2xl border border-dashed border-purple-200 dark:border-purple-900/40">
+                        <h4 className="text-[0.7rem] font-bold text-purple-600 dark:text-purple-500 uppercase tracking-widest mb-4">
+                            Recursos Rápidos
+                        </h4>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 bg-white dark:bg-[#12091c]/50 rounded-xl border border-purple-100 dark:border-purple-800/30">
+                                <span className="block text-2xl mb-1">📖</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-purple-300">Guía de Uso</span>
+                            </div>
+                            <div className="p-4 bg-white dark:bg-[#12091c]/50 rounded-xl border border-purple-100 dark:border-purple-800/30">
+                                <span className="block text-2xl mb-1">📝</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-purple-300">Fórmulas</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-
-            {/* ═══════════ FOOTER ═══════════ */}
-            <footer className="text-center px-5 py-6 text-[0.72rem]
-                         text-slate-400 dark:text-emerald-900">
-                SimuladoPRO · v1.0
-            </footer>
-
+                {/* Footer simple */}
+                <footer className="pt-12 pb-6 text-center border-t border-slate-100 dark:border-purple-900/10">
+                    <p className="text-[0.65rem] text-slate-400 dark:text-purple-800 font-bold tracking-widest uppercase">
+                        LambdaPro • Teoría de Colas • 2026
+                    </p>
+                </footer>
+            </main>
         </div>
     );
 }
