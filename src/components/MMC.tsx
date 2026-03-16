@@ -9,13 +9,12 @@ import {
     calcPw_MMC,
     calcPn_MMC,
 } from '../utils/math/queuingFormulas';
-import { useSettings } from '../context/SettingsContext';
 import { ResultCard } from './ResultCard';
 import { DistMMC } from './DistMMC';
 import { formatSmart } from '../utils/formatSmart';
 
 export const MMC: React.FC = () => {
-    const { decimals } = useSettings();
+    const decimals = 4;
     const [lambda, setLambda] = useState<number | ''>('');
     const [mu, setMu] = useState<number | ''>('');
     const [c, setC] = useState<number | ''>('');
@@ -94,7 +93,7 @@ export const MMC: React.FC = () => {
             <div className="mt-6 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                     <ResultCard title="Factor de Uso" symbol="ρ" value={rho} description="Utilización del sistema" highlight={rho > 0.8} />
-                    <ResultCard title="Prob. Vacío" symbol="P₀" value={p0} description="Sistema sin clientes" />
+                    <ResultCard title="Prob. Vacío" symbol="P0" value={p0} description="Sistema sin clientes" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                     <ResultCard title="Clientes en Cola" symbol="Lq" value={lq} description="Promedio esperando" />
@@ -212,9 +211,7 @@ export const MMC: React.FC = () => {
 
                             {/* Sugerencia de C mínimo */}
                             {cMin !== null && cMin > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={() => setShowFormulaPopup(true)}
+                                <div
                                     className="mt-2 flex items-center gap-2 w-full px-3 py-2
                                         bg-purple-50 dark:bg-purple-900/25
                                         border border-purple-200 dark:border-purple-700/50
@@ -228,8 +225,7 @@ export const MMC: React.FC = () => {
                                     </span>
                                     <button
                                         type="button"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
+                                        onClick={() => {
                                             setC(cMin);
                                         }}
                                         className="text-[0.65rem] font-bold px-2 py-1 rounded-lg
@@ -239,7 +235,7 @@ export const MMC: React.FC = () => {
                                     >
                                         Usar
                                     </button>
-                                </button>
+                                </div>
                             )}
                         </div>
 
