@@ -5,7 +5,7 @@ interface HomeViewProps {
 
 export default function HomeView({ onNavigate }: HomeViewProps) {
     return (
-        <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-50 animate-[fadeSlideUp_0.3s_ease_both]">
+        <div className="flex flex-col min-h-[100dvh] bg-slate-50 dark:bg-[#06040d] text-slate-900 dark:text-purple-100 font-sans selection:bg-purple-200 dark:selection:bg-purple-900/40 animate-[fadeSlideUp_0.3s_ease_both]">
 
             {/* ═══════════ HEADER ═══════════ */}
             <header className="bg-gradient-to-b from-purple-100 to-slate-50
@@ -15,7 +15,8 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
 
                     {/* Logo replacement with Stylized Rho */}
                     <div className="w-24 h-24 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
-                        <img src="/logo.png" alt="Logo" className="w-24 h-24 object-contain" />
+                        <img src="/logo.png" alt="Logo Dark" className="w-24 h-24 object-contain hidden dark:block" />
+                        <img src="/lightlogo.png" alt="Logo Light" className="w-24 h-24 object-contain block dark:hidden" />
                     </div>
 
                     {/* Texto */}
@@ -23,7 +24,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                         <h1 className="text-[1.8rem] font-extrabold tracking-tight">
                             Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
                         </h1>
-                        <p className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-400
+                        <p className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-300
                                 uppercase tracking-[1.5px] mt-2">
                             Teoría de Colas · Análisis de Servidores
                         </p>
@@ -39,8 +40,8 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                     <h2 className="text-xl font-bold text-slate-800 dark:text-purple-100">
                         Optimiza tus sistemas de servicio
                     </h2>
-                    <p className="text-sm text-slate-500 dark:text-purple-400/70 leading-relaxed">
-                        Analiza colas de espera con precisión matemática.
+                    <p className="text-slate-600 dark:text-purple-200/70 text-sm max-w-[280px] mx-auto leading-relaxed">
+                        Selecciona el tipo de sistema de colas que deseas analizar hoy.
                         Calcula tiempos promedio, niveles de ocupación y probabilidades para tomar decisiones informadas.
                     </p>
                 </section>

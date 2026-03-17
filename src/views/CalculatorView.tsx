@@ -67,7 +67,7 @@ export default function CalculatorView() {
   const currentServer = SERVER_OPTIONS.find((o) => o.value === selectedServer);
 
   return (
-    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-50 animate-[fadeSlideUp_0.3s_ease_both]">
+    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-100 animate-[fadeSlideUp_0.3s_ease_both]">
       {/* ═══════════ HEADER ═══════════ */}
       {selectedServer ? (
         <header
@@ -78,7 +78,8 @@ export default function CalculatorView() {
           <div className="flex items-center gap-3">
             {/* Logo replacement with Stylized Rho */}
             <div className="w-14 h-14 flex items-center justify-center">
-              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <img src="/logo.png" alt="Logo Dark" className="w-12 h-12 object-contain hidden dark:block" />
+              <img src="/lightlogo.png" alt="Logo Light" className="w-12 h-12 object-contain block dark:hidden" />
             </div>
             <div>
               <h1 className="text-[1.1rem] font-extrabold tracking-tight leading-none">
@@ -99,7 +100,8 @@ export default function CalculatorView() {
         >
           <div className="flex flex-col items-center gap-4 px-6 pt-12 pb-10">
             <div className="w-20 h-20 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
-              <img src="/logo.png" alt="Logo" className="w-20 h-20 object-contain" />
+              <img src="/logo.png" alt="Logo Dark" className="w-20 h-20 object-contain hidden dark:block" />
+              <img src="/lightlogo.png" alt="Logo Light" className="w-20 h-20 object-contain block dark:hidden" />
             </div>
 
             {/* Texto */}
@@ -108,7 +110,7 @@ export default function CalculatorView() {
                 Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
               </h1>
               <p
-                className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-400
+                className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-300
                             uppercase tracking-[1.5px] mt-2"
               >
                 Teoría de Colas · Análisis de Servidores
@@ -133,12 +135,12 @@ export default function CalculatorView() {
             type="button"
             onClick={() => setOpen((prev) => !prev)}
             className="w-full flex items-center justify-between
-                       bg-white dark:bg-[#0a1510]
-                       border border-slate-300 dark:border-purple-800/70
+                       bg-white dark:bg-purple-950/40
+                       border border-slate-300 dark:border-purple-800/60
                        rounded-xl px-4 py-3
                        text-left transition-all duration-150
-                       hover:border-purple-500 dark:hover:border-purple-600/80
-                       dark:hover:bg-[#0d1a13]
+                       hover:border-purple-500 dark:hover:border-purple-600/60
+                       dark:hover:bg-purple-900/30
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/40"
             aria-haspopup="listbox"
             aria-expanded={open}
@@ -184,10 +186,10 @@ export default function CalculatorView() {
             <ul
               role="listbox"
               className="absolute z-10 top-full mt-2 left-0 right-0
-                         bg-white dark:bg-[#0a1510]
-                         border border-slate-200 dark:border-purple-800/60
+                         bg-[#1a0b33] dark:bg-[#1a0b33]
+                         border border-purple-800/40
                          rounded-xl overflow-hidden
-                         shadow-xl shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)]"
+                         shadow-2xl shadow-black/80"
             >
               {SERVER_OPTIONS.map((opt) => (
                 <li
@@ -202,33 +204,37 @@ export default function CalculatorView() {
                       setCapacity("infinita"); // Reset sub-tab
                       setOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
-                                transition-colors duration-100
-                                ${selectedServer === opt.value
-                        ? "bg-purple-50 dark:bg-purple-900/40"
-                        : "hover:bg-slate-50 dark:hover:bg-purple-900/20"
-                      }`}
+                     className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
+                                 transition-all duration-100
+                                 ${selectedServer === opt.value
+                         ? "bg-purple-400 text-purple-950 shadow-inner"
+                         : "text-purple-100/90 hover:bg-purple-900/50"
+                       }`}
                   >
-                    <span className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 p-1.5 rounded-md">
+                    <span className={`${selectedServer === opt.value
+                        ? "bg-purple-950/10 text-purple-900"
+                        : "text-purple-400 bg-purple-950/30"}
+                         p-1.5 rounded-md transition-colors`}>
                       {opt.icon}
                     </span>
-                    <span className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-900 dark:text-purple-50">
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold tracking-tight">
                         {opt.label}
                       </span>
-                      <span className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
+                      <span className={`text-[0.65rem] font-medium
+                         ${selectedServer === opt.value ? "text-purple-800" : "text-purple-400"}`}>
                         {opt.subtitle}
                       </span>
-                    </span>
+                    </div>
                     {selectedServer === opt.value && (
-                      <span className="ml-auto text-purple-600 dark:text-purple-400">
+                      <span className="ms-auto">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          strokeWidth={2}
+                          strokeWidth={2.5}
                           stroke="currentColor"
-                          className="w-5 h-5"
+                          className="w-5 h-5 text-purple-950"
                         >
                           <path
                             strokeLinecap="round"
@@ -249,13 +255,13 @@ export default function CalculatorView() {
       {/* ─── Segmented Control para Capacidad ─── */}
       {selectedServer && (
         <div className="px-5 mt-2">
-          <div className="bg-slate-200/60 dark:bg-[#0c1810] p-1 rounded-xl flex items-center">
+          <div className="bg-slate-200/60 dark:bg-purple-950/30 p-1 rounded-xl flex items-center border border-transparent dark:border-purple-900/20">
             <button
               onClick={() => setCapacity("infinita")}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200
                 ${capacity === "infinita"
-                  ? "bg-white dark:bg-[#112217] text-purple-700 dark:text-purple-300 shadow-sm"
-                  : "text-slate-500 dark:text-purple-700/80 hover:text-slate-700 dark:hover:text-purple-400"
+                  ? "bg-white dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 shadow-sm"
+                  : "text-slate-500 dark:text-purple-400/70 hover:text-slate-700 dark:hover:text-purple-300"
                 }`}
             >
               Capacidad Infinita
@@ -267,8 +273,8 @@ export default function CalculatorView() {
               onClick={() => setCapacity("finita")}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200
                 ${capacity === "finita"
-                  ? "bg-white dark:bg-[#112217] text-purple-700 dark:text-purple-300 shadow-sm"
-                  : "text-slate-500 dark:text-purple-700/80 hover:text-slate-700 dark:hover:text-purple-400"
+                  ? "bg-white dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 shadow-sm"
+                  : "text-slate-500 dark:text-purple-400/70 hover:text-slate-700 dark:hover:text-purple-300"
                 }`}
             >
               Capacidad Finita

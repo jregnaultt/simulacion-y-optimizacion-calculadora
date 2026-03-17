@@ -76,7 +76,7 @@ export default function Navbar({ activeView, onNavigate }: NavbarProps) {
                     bg-white/95 dark:bg-[#080510]/95
                     backdrop-blur-md
                     border-t border-slate-200 dark:border-purple-900/40
-                    shadow-[0_-4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_32px_rgba(0,0,0,0.5)]">
+                    shadow-[0_-4px_16px_rgba(0,0,0,0.04)] dark:shadow-[0_-8px_32px_rgba(0,0,0,0.4)]">
             <div className="flex items-center justify-around px-4 pt-1 pb-1.5">
 
                 {NAV_ITEMS.map((item) => {
@@ -97,8 +97,7 @@ export default function Navbar({ activeView, onNavigate }: NavbarProps) {
                         >
                             {active && (
                                 <span className="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5
-                                 bg-purple-500 dark:bg-purple-400 rounded-full
-                                 shadow-[0_0_8px_2px] shadow-purple-400/50 dark:shadow-purple-500/60" />
+                                 bg-purple-500 dark:bg-purple-400 rounded-full" />
                             )}
                             {item.icon(active)}
                             <span className="text-[0.65rem] font-semibold tracking-wide">

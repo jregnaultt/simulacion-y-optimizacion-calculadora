@@ -66,7 +66,7 @@ function ToleranceToast({
         max-w-[90vw] px-5 py-3
         bg-purple-600/95 dark:bg-purple-500/95 backdrop-blur-md
         text-white text-sm font-semibold
-        rounded-2xl shadow-xl shadow-purple-900/40
+        rounded-2xl shadow-lg dark:shadow-black/40
         transition-all duration-500 ease-out
         ${visible
           ? "opacity-100 translate-y-0"
@@ -115,14 +115,15 @@ export default function OptionsView() {
       <div className="p-6 max-w-2xl mx-auto space-y-8 pb-24">
         <header className="flex items-center gap-4">
           <div className="w-12 h-12 flex items-center justify-center">
-            <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+            <img src="/logo.png" alt="Logo Dark" className="w-12 h-12 object-contain hidden dark:block" />
+            <img src="/lightlogo.png" alt="Logo Light" className="w-12 h-12 object-contain block dark:hidden" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight">
               Configuración
             </h1>
-            <p className="text-xs text-slate-500 dark:text-purple-400/60 font-medium">
-              Preferencias del sistema
+            <p className="text-sm text-slate-500 dark:text-purple-100 font-medium">
+              Ajusta los parámetros globales de la aplicación
             </p>
           </div>
         </header>
@@ -143,7 +144,7 @@ export default function OptionsView() {
               onClick={toggle}
               className={`
                 relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20
-                ${isDark ? "bg-purple-600 shadow-[0_0_12px_rgba(147,51,234,0.4)]" : "bg-slate-200"}
+                ${isDark ? "bg-purple-600" : "bg-slate-200"}
               `}
             >
               <span className="sr-only">Cambiar modo</span>
@@ -181,7 +182,7 @@ export default function OptionsView() {
                   className={`
                     min-w-[2.5rem] h-10 rounded-xl text-sm font-bold transition-all duration-200
                     ${decimals === n
-                      ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
+                      ? "bg-purple-600 text-white shadow-sm"
                       : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
                     }
                   `}
@@ -217,7 +218,7 @@ export default function OptionsView() {
                   className={`
                     px-3 h-10 rounded-xl text-sm font-bold transition-all duration-200
                     ${tolerance === opt.value
-                      ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
+                      ? "bg-purple-600 text-white shadow-sm"
                       : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
                     }
                   `}
