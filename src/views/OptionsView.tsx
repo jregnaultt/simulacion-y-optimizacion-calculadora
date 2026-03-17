@@ -66,12 +66,11 @@ function ToleranceToast({
         max-w-[90vw] px-5 py-3
         bg-purple-600/95 dark:bg-purple-500/95 backdrop-blur-md
         text-white text-sm font-semibold
-        rounded-2xl shadow-xl shadow-purple-900/40
+        rounded-2xl shadow-lg dark:shadow-black/40
         transition-all duration-500 ease-out
-        ${
-          visible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-4 pointer-events-none"
+        ${visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-4 pointer-events-none"
         }
       `}
     >
@@ -87,20 +86,16 @@ export default function OptionsView() {
   const { isDark, toggle } = useTheme();
   const { decimals, tolerance, setDecimals, setTolerance } = useSettings();
 
-  /* ─── Toast state ─── */
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleToleranceChange = (newVal: number) => {
-    const moreRows = newVal < tolerance;
-    setTolerance(newVal);
+  const handleToleranceChange = (val: number) => {
+    setTolerance(val);
+    const newDecimals = Math.abs(Math.log10(val));
+    setDecimals(newDecimals);
 
-    setToastMessage(
-      moreRows
-        ? `Más precisión — La tabla mostrará más filas`
-        : `Menos precisión — La tabla mostrará menos filas`
-    );
+    setToastMessage(`Tolerancia: ${val} (Decimals auto: ${newDecimals})`);
     setToastVisible(true);
 
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -118,13 +113,19 @@ export default function OptionsView() {
       <ToleranceToast message={toastMessage} visible={toastVisible} />
 
       <div className="p-6 max-w-2xl mx-auto space-y-8 pb-24">
-        <header>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-            Configuración
-          </h1>
-          <p className="text-slate-500 dark:text-purple-400/60 mt-2">
-            Configuración de preferencias del sistema
-          </p>
+        <header className="flex items-center gap-4">
+          <div className="w-12 h-12 flex items-center justify-center">
+            <img src="/logo.png" alt="Logo Dark" className="w-12 h-12 object-contain hidden dark:block" />
+            <img src="/lightlogo.png" alt="Logo Light" className="w-12 h-12 object-contain block dark:hidden" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight">
+              Configuración
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-purple-100 font-medium">
+              Ajusta los parámetros globales de la aplicación
+            </p>
+          </div>
         </header>
 
         {/* ─── Modo Visual ─── */}
@@ -142,7 +143,7 @@ export default function OptionsView() {
             <button
               onClick={toggle}
               className={`
-                relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none
+                relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20
                 ${isDark ? "bg-purple-600" : "bg-slate-200"}
               `}
             >
@@ -153,7 +154,9 @@ export default function OptionsView() {
                   ${isDark ? "translate-x-12" : "translate-x-1"}
                 `}
               >
-                {isDark ? <MoonIcon /> : <SunIcon />}
+                <div className="text-purple-600">
+                  {isDark ? <MoonIcon /> : <SunIcon />}
+                </div>
               </div>
             </button>
           </div>
@@ -178,10 +181,9 @@ export default function OptionsView() {
                   onClick={() => setDecimals(n)}
                   className={`
                     min-w-[2.5rem] h-10 rounded-xl text-sm font-bold transition-all duration-200
-                    ${
-                      decimals === n
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
-                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                    ${decimals === n
+                      ? "bg-purple-600 text-white shadow-sm"
+                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
                     }
                   `}
                 >
@@ -215,10 +217,9 @@ export default function OptionsView() {
                   onClick={() => handleToleranceChange(opt.value)}
                   className={`
                     px-3 h-10 rounded-xl text-sm font-bold transition-all duration-200
-                    ${
-                      tolerance === opt.value
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
-                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                    ${tolerance === opt.value
+                      ? "bg-purple-600 text-white shadow-sm"
+                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
                     }
                   `}
                 >

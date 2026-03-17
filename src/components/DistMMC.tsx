@@ -1,6 +1,5 @@
 import React from 'react';
 import { calcPn_MMC, calcP0_MMC } from '../utils/math/queuingFormulas';
-import { useSettings } from '../context/SettingsContext';
 import { formatSmart } from '../utils/formatSmart';
 
 interface DistMMCProps {
@@ -12,7 +11,7 @@ interface DistMMCProps {
 }
 
 export const DistMMC: React.FC<DistMMCProps> = ({ lambda, mu, c, rho: propRho, p0: propP0 }) => {
-    const { decimals } = useSettings();
+    const decimals = 4;
     const tolerance = Math.pow(10, -decimals);
     const rho = propRho ?? (lambda / (c * mu));
 

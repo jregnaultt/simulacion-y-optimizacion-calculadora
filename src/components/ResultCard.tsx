@@ -24,10 +24,10 @@ export const ResultCard: React.FC<ResultCardProps> = ({
       ${highlight
         ? `bg-purple-50 dark:bg-purple-900/25
            border-purple-200 dark:border-purple-700/60
-           shadow-md dark:shadow-purple-900/50`
+           shadow-md dark:shadow-purple-950/20`
         : `bg-white dark:bg-[#140a20]
            border-slate-100 dark:border-purple-900/50
-           shadow-sm dark:shadow-black/30`
+           shadow-sm dark:shadow-black/20`
       }`}>
       <div className="flex justify-between items-start mb-2">
         <h3 className="text-sm font-medium text-slate-500 dark:text-purple-500">{title}</h3>

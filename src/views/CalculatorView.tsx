@@ -1,23 +1,24 @@
-import { useState } from "react";
-import { MM1K } from "../components/MM1K";
-import { MM1 } from "../components/MM1";
+import { useState } from 'react';
+import { MM1K } from '../components/MM1K';
+import { MM1 } from '../components/MM1';
 import { MMC } from "../components/MMC";
 import { MMCN } from "../components/MMCN";
 
-type QueueType = "" | "limitada" | "ilimitada" | "multi" | "multiN";
+type ServerType = "" | "single" | "multi";
+type CapacityType = "infinita" | "finita";
 
-interface Option {
-  value: "limitada" | "ilimitada" | "multi" | "multiN";
+interface ServerOption {
+  value: "single" | "multi";
   label: string;
   subtitle: string;
   icon: React.ReactElement;
 }
 
-const OPTIONS: Option[] = [
+const SERVER_OPTIONS: ServerOption[] = [
   {
-    value: "limitada",
-    label: "Con límite de cola",
-    subtitle: "M/M/1/K — Capacidad finita",
+    value: "single",
+    label: "Líneas de espera de un servidor",
+    subtitle: "M/M/1 y M/M/1/K",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -30,36 +31,15 @@ const OPTIONS: Option[] = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    value: "ilimitada",
-    label: "Sin límite de cola",
-    subtitle: "M/M/1 — Capacidad infinita",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
         />
       </svg>
     ),
   },
   {
     value: "multi",
-    label: "Múltiples servidores",
-    subtitle: "M/M/c — Capacidad infinita",
+    label: "Líneas de espera de varios servidores",
+    subtitle: "M/M/c y M/M/c/N",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -77,70 +57,70 @@ const OPTIONS: Option[] = [
       </svg>
     ),
   },
-  {
-    value: "multiN",
-    label: "Multiservidor con límite",
-    subtitle: "M/M/c/N — Capacidad finita",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-        />
-      </svg>
-    ),
-  },
 ];
 
 export default function CalculatorView() {
-  const [selected, setSelected] = useState<QueueType>("ilimitada");
+  const [selectedServer, setSelectedServer] = useState<ServerType>("single");
+  const [capacity, setCapacity] = useState<CapacityType>("infinita");
   const [open, setOpen] = useState(false);
 
-  const current = OPTIONS.find((o) => o.value === selected);
+  const currentServer = SERVER_OPTIONS.find((o) => o.value === selectedServer);
 
   return (
-    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-50">
-      {/* ─── Header ─── */}
-      <header
-        className="bg-slate-100 dark:bg-[#12091c]
-                         border-b border-slate-200 dark:border-purple-900/50
-                         px-5 py-4"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-400">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
-              />
-            </svg>
+    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-100 animate-[fadeSlideUp_0.3s_ease_both]">
+      {/* ═══════════ HEADER ═══════════ */}
+      {selectedServer ? (
+        <header
+          className="bg-slate-100 dark:bg-[#0c0415]
+                           border-b border-slate-200 dark:border-purple-900/50
+                           px-5 py-4 transition-all duration-300"
+        >
+          <div className="flex items-center gap-3">
+            {/* Logo replacement with Stylized Rho */}
+            <div className="w-14 h-14 flex items-center justify-center">
+              <img src="/logo.png" alt="Logo Dark" className="w-12 h-12 object-contain hidden dark:block" />
+              <img src="/lightlogo.png" alt="Logo Light" className="w-12 h-12 object-contain block dark:hidden" />
+            </div>
+            <div>
+              <h1 className="text-[1.1rem] font-extrabold tracking-tight leading-none">
+                Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
+              </h1>
+              <p className="text-[0.65rem] text-purple-600 dark:text-purple-500 font-bold uppercase tracking-wider mt-0.5">
+                Teoría de Colas · Análisis de Servidores
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-[1.1rem] font-bold">Análisis de Servidores</h1>
-            <p className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
-              Configuración del modelo matemático
-            </p>
-          </div>
-        </div>
-      </header>
+        </header>
+      ) : (
+        <header
+          className="bg-gradient-to-b from-purple-100 to-slate-50
+                           dark:from-purple-950 dark:to-[#080510]
+                           border-b border-purple-200 dark:border-purple-900
+                           transition-all duration-300"
+        >
+          <div className="flex flex-col items-center gap-4 px-6 pt-12 pb-10">
+            <div className="w-20 h-20 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
+              <img src="/logo.png" alt="Logo Dark" className="w-20 h-20 object-contain hidden dark:block" />
+              <img src="/lightlogo.png" alt="Logo Light" className="w-20 h-20 object-contain block dark:hidden" />
+            </div>
 
-      {/* ─── Dropdown ─── */}
+            {/* Texto */}
+            <div className="text-center">
+              <h1 className="text-[1.9rem] font-extrabold tracking-tight">
+                Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
+              </h1>
+              <p
+                className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-300
+                            uppercase tracking-[1.5px] mt-2"
+              >
+                Teoría de Colas · Análisis de Servidores
+              </p>
+            </div>
+          </div>
+        </header>
+      )}
+
+      {/* ─── Dropdown Servidor ─── */}
       <div className="px-5 pt-6 pb-2">
         <label
           className="block text-[0.7rem] font-bold uppercase tracking-[1.5px]
@@ -155,33 +135,34 @@ export default function CalculatorView() {
             type="button"
             onClick={() => setOpen((prev) => !prev)}
             className="w-full flex items-center justify-between
-                       bg-white dark:bg-[#0e0715]
-                       border border-slate-300 dark:border-purple-800/70
+                       bg-white dark:bg-purple-950/40
+                       border border-slate-300 dark:border-purple-800/60
                        rounded-xl px-4 py-3
                        text-left transition-all duration-150
-                       hover:border-purple-500 dark:hover:border-purple-600/80
-                       dark:hover:bg-[#140a20]
+                       hover:border-purple-400 dark:hover:border-purple-600/60
+                       hover:bg-slate-50 dark:hover:bg-purple-900/30
+                       text-slate-900 dark:text-purple-50
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/40"
             aria-haspopup="listbox"
             aria-expanded={open}
           >
-            {current ? (
+            {currentServer ? (
               <span className="flex items-center gap-3">
                 <span className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 p-1.5 rounded-md">
-                  {current.icon}
+                  {currentServer.icon}
                 </span>
                 <span className="flex flex-col">
                   <span className="text-sm font-semibold text-slate-900 dark:text-purple-50">
-                    {current.label}
+                    {currentServer.label}
                   </span>
-                  <span className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
-                    {current.subtitle}
+                  <span className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                    {currentServer.subtitle}
                   </span>
                 </span>
               </span>
             ) : (
               <span className="text-sm text-slate-400 dark:text-purple-700 font-medium">
-                Seleccione un modelo matemático...
+                Seleccione un tipo de servidor...
               </span>
             )}
 
@@ -206,51 +187,55 @@ export default function CalculatorView() {
             <ul
               role="listbox"
               className="absolute z-10 top-full mt-2 left-0 right-0
-                         bg-white dark:bg-[#0e0715]
-                         border border-slate-200 dark:border-purple-800/60
+                         bg-white dark:bg-[#1a0b33]
+                         border border-slate-200 dark:border-purple-800/40
                          rounded-xl overflow-hidden
-                         shadow-xl shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)]"
+                         shadow-2xl shadow-black/10 dark:shadow-black/80"
             >
-              {OPTIONS.map((opt) => (
+              {SERVER_OPTIONS.map((opt) => (
                 <li
                   key={opt.value}
                   role="option"
-                  aria-selected={selected === opt.value}
+                  aria-selected={selectedServer === opt.value}
                 >
                   <button
                     type="button"
                     onClick={() => {
-                      setSelected(opt.value);
+                      setSelectedServer(opt.value);
+                      setCapacity("infinita"); // Reset sub-tab
                       setOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
-                                transition-colors duration-100
-                                ${
-                                  selected === opt.value
-                                    ? "bg-purple-50 dark:bg-purple-900/40"
-                                    : "hover:bg-slate-50 dark:hover:bg-purple-900/20"
-                                }`}
+                      className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
+                                  transition-all duration-100
+                                  ${selectedServer === opt.value
+                          ? "bg-purple-100 dark:bg-purple-400 text-purple-900 dark:text-purple-950 shadow-inner"
+                          : "text-slate-600 dark:text-purple-100/90 hover:bg-slate-50 dark:hover:bg-purple-900/50"
+                        }`}
                   >
-                    <span className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 p-1.5 rounded-md">
+                     <span className={`${selectedServer === opt.value
+                         ? "bg-purple-950/10 text-purple-900"
+                         : "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30"}
+                          p-1.5 rounded-md transition-colors`}>
                       {opt.icon}
                     </span>
-                    <span className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-900 dark:text-purple-50">
-                        {opt.label}
-                      </span>
-                      <span className="text-[0.72rem] text-purple-600 dark:text-purple-500 font-medium">
-                        {opt.subtitle}
-                      </span>
-                    </span>
-                    {selected === opt.value && (
-                      <span className="ml-auto text-purple-600 dark:text-purple-400">
+                     <div className="flex flex-col">
+                       <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+                         {opt.label}
+                       </span>
+                       <span className={`text-[0.65rem] font-medium
+                          ${selectedServer === opt.value ? "text-purple-800" : "text-slate-400 dark:text-purple-400"}`}>
+                         {opt.subtitle}
+                       </span>
+                     </div>
+                    {selectedServer === opt.value && (
+                      <span className="ms-auto">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          strokeWidth={2}
+                          strokeWidth={2.5}
                           stroke="currentColor"
-                          className="w-5 h-5"
+                          className="w-5 h-5 text-purple-900 dark:text-purple-950"
                         >
                           <path
                             strokeLinecap="round"
@@ -268,9 +253,43 @@ export default function CalculatorView() {
         </div>
       </div>
 
+      {/* ─── Segmented Control para Capacidad ─── */}
+      {selectedServer && (
+        <div className="px-5 mt-2">
+          <div className="bg-slate-200/60 dark:bg-purple-950/30 p-1 rounded-xl flex items-center border border-transparent dark:border-purple-900/20">
+            <button
+              onClick={() => setCapacity("infinita")}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200
+                ${capacity === "infinita"
+                  ? "bg-white dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 shadow-sm"
+                  : "text-slate-500 dark:text-purple-400/70 hover:text-slate-700 dark:hover:text-purple-300"
+                }`}
+            >
+              Capacidad Infinita
+              <span className="block text-[0.65rem] font-normal opacity-70">
+                {selectedServer === "single" ? "M/M/1" : "M/M/c"}
+              </span>
+            </button>
+            <button
+              onClick={() => setCapacity("finita")}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200
+                ${capacity === "finita"
+                  ? "bg-white dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 shadow-sm"
+                  : "text-slate-500 dark:text-purple-400/70 hover:text-slate-700 dark:hover:text-purple-300"
+                }`}
+            >
+              Capacidad Finita
+              <span className="block text-[0.65rem] font-normal opacity-70">
+                {selectedServer === "single" ? "M/M/1/K" : "M/M/c/N"}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ─── Contenido según selección ─── */}
       <div className="flex-1 px-5 pt-4 pb-4">
-        {!selected && (
+        {!selectedServer && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-center py-16">
             <div className="w-16 h-16 rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-300 dark:text-purple-800/80 mb-4">
               <svg
@@ -289,14 +308,16 @@ export default function CalculatorView() {
               </svg>
             </div>
             <p className="text-sm text-slate-500 dark:text-purple-700 font-medium">
-              Seleccione un modelo matemático para iniciar el análisis
+              Seleccione un tipo de servidor para iniciar el análisis
             </p>
           </div>
         )}
-        {selected === "limitada" && <MM1K />}
-        {selected === "ilimitada" && <MM1 />}
-        {selected === "multi" && <MMC />}
-        {selected === "multiN" && <MMCN />}
+
+        {/* Renderizado condicional de los componentes de cálculo */}
+        {selectedServer === "single" && capacity === "infinita" && <MM1 />}
+        {selectedServer === "single" && capacity === "finita" && <MM1K />}
+        {selectedServer === "multi" && capacity === "infinita" && <MMC />}
+        {selectedServer === "multi" && capacity === "finita" && <MMCN />}
       </div>
     </div>
   );

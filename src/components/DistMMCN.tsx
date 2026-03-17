@@ -1,6 +1,5 @@
 import React from 'react';
 import { calcPn_MMCN } from '../utils/math/queuingFormulas';
-import { useSettings } from '../context/SettingsContext';
 import { formatSmart } from '../utils/formatSmart';
 
 interface DistMMCNProps {
@@ -12,7 +11,7 @@ interface DistMMCNProps {
 }
 
 export const DistMMCN: React.FC<DistMMCNProps> = ({ lambda, mu, c, N, p0 }) => {
-    const { decimals } = useSettings();
+    const decimals = 4;
     const tolerance = Math.pow(10, -decimals);
 
     // Generate items n=0 to N, con corte cuando Fn ≈ 1

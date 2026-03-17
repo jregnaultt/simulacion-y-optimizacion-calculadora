@@ -9,13 +9,12 @@ import {
     calcW_MMCN,
     calcWq_MMCN,
 } from '../utils/math/queuingFormulas';
-import { useSettings } from '../context/SettingsContext';
 import { ResultCard } from './ResultCard';
 import { DistMMCN } from './DistMMCN';
 import { formatSmart } from '../utils/formatSmart';
 
 export const MMCN: React.FC = () => {
-    const { decimals } = useSettings();
+    const decimals = 4;
     const [lambda, setLambda] = useState<number | ''>('');
     const [mu, setMu] = useState<number | ''>('');
     const [c, setC] = useState<number | ''>('');
@@ -26,7 +25,8 @@ export const MMCN: React.FC = () => {
     // C mínimo sugerido
     const cMin = useMemo(() => {
         if (typeof lambda !== 'number' || typeof mu !== 'number' || lambda <= 0 || mu <= 0) return null;
-        return Math.ceil(lambda / mu);
+        // Para rendimiento óptimo rho < 1 -> c > lambda/mu
+        return Math.floor(lambda / mu) + 1;
     }, [lambda, mu]);
 
     const handleNumberInput = (
@@ -92,7 +92,7 @@ export const MMCN: React.FC = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                     <ResultCard title="Factor de Uso" symbol="ρ" value={rho} description="Utilización del sistema" highlight={rho > 0.8} />
-                    <ResultCard title="Prob. Vacío" symbol="P₀" value={p0} description="Sistema sin clientes" />
+                    <ResultCard title="Prob. Vacío" symbol="P0" value={p0} description="Sistema sin clientes" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                     <ResultCard title="Clientes en Cola" symbol="Lq" value={lq} description="Promedio esperando" />
@@ -155,7 +155,8 @@ export const MMCN: React.FC = () => {
                                     className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                         bg-slate-50 dark:bg-[#0e0715]
                                         text-slate-900 dark:text-purple-100
-                                        placeholder:text-slate-400 dark:placeholder:text-purple-900
+                                        placeholder:text-slate-400 dark:placeholder:text-purple-400/50
+                                        placeholder:font-medium
                                         focus:border-purple-500 dark:focus:border-purple-500/80
                                         focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
                                         dark:focus:bg-[#140a20]
@@ -175,8 +176,9 @@ export const MMCN: React.FC = () => {
                                     type="number" inputMode="decimal" min="0" step="any"
                                     className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                         bg-slate-50 dark:bg-[#0e0715]
-                                        text-slate-900 dark:text-purple-50
-                                        placeholder:text-slate-400 dark:placeholder:text-purple-800
+                                        text-slate-900 dark:text-purple-100
+                                        placeholder:text-slate-400 dark:placeholder:text-purple-400/50
+                                        placeholder:font-medium
                                         focus:border-purple-500 dark:focus:border-purple-500/80
                                         focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
                                         dark:focus:bg-[#140a20]
@@ -213,9 +215,7 @@ export const MMCN: React.FC = () => {
 
                             {/* Sugerencia de C mínimo */}
                             {cMin !== null && cMin > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={() => setShowFormulaPopup(true)}
+                                <div
                                     className="mt-2 flex items-center gap-2 w-full px-3 py-2
                                         bg-purple-50 dark:bg-purple-900/25
                                         border border-purple-200 dark:border-purple-700/50
@@ -229,8 +229,7 @@ export const MMCN: React.FC = () => {
                                     </span>
                                     <button
                                         type="button"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
+                                        onClick={() => {
                                             setC(cMin);
                                         }}
                                         className="text-[0.65rem] font-bold px-2 py-1 rounded-lg
@@ -240,7 +239,7 @@ export const MMCN: React.FC = () => {
                                     >
                                         Usar
                                     </button>
-                                </button>
+                                </div>
                             )}
                         </div>
 
@@ -327,12 +326,12 @@ export const MMCN: React.FC = () => {
                             </div>
                             <p>Despejando <span className="font-mono font-bold">c</span>:</p>
                             <div className="bg-slate-50 dark:bg-purple-950/40 rounded-xl p-3 font-mono text-center text-base text-slate-800 dark:text-purple-200 border border-slate-200 dark:border-purple-800/40">
-                                c {'>'} λ / μ → c<sub>min</sub> = ⌈λ / μ⌉
+                                c {'>'} λ / μ → c<sub>min</sub> = ⌊λ / μ⌋ + 1
                             </div>
                             {typeof lambda === 'number' && typeof mu === 'number' && mu > 0 && (
                                 <p>
                                     Con λ={lambda} y μ={mu}:
-                                    <span className="font-bold text-purple-700 dark:text-purple-400"> c<sub>min</sub> = ⌈{lambda}/{mu}⌉ = {cMin}</span>
+                                    <span className="font-bold text-purple-700 dark:text-purple-400"> c<sub>min</sub> = ⌊{lambda}/{mu}⌋ + 1 = {cMin}</span>
                                 </p>
                             )}
                         </div>

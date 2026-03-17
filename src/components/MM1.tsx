@@ -33,12 +33,12 @@ export const MM1: React.FC = () => {
                         rounded-2xl border border-dashed
                         border-slate-200 dark:border-purple-900 mt-6"
         >
-          <p className="text-slate-500 dark:text-purple-600 mb-2 font-medium">
-            Los parámetros (λ, μ) deben ser mayores a 0.
+          <p className="text-slate-500 dark:text-purple-600 mb-2">
+            Por favor, ingrese valores válidos mayores a 0.
           </p>
           <p className="text-sm text-slate-400 dark:text-purple-800">
-            Nota: La tasa de servicio (μ) debe ser mayor a la tasa de llegada
-            (λ) para que el sistema sea estable.
+            Nota: La tasa de servicio (μ) debe ser mayor a la tasa de llegada (λ)
+            para que el sistema sea estable.
           </p>
         </div>
       );
@@ -177,7 +177,8 @@ export const MM1: React.FC = () => {
                   className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                bg-slate-50 dark:bg-[#0e0715]
                                text-slate-900 dark:text-purple-100
-                               placeholder:text-slate-400 dark:placeholder:text-purple-900
+                               placeholder:text-slate-400 dark:placeholder:text-purple-400/50
+                               placeholder:font-medium
                                focus:border-purple-500 dark:focus:border-purple-500/80
                                focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
                                dark:focus:bg-[#140a20]
@@ -222,8 +223,9 @@ export const MM1: React.FC = () => {
                   step="any"
                   className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                                bg-slate-50 dark:bg-[#0e0715]
-                               text-slate-900 dark:text-purple-50
-                               placeholder:text-slate-400 dark:placeholder:text-purple-800
+                               text-slate-900 dark:text-purple-100
+                               placeholder:text-slate-400 dark:placeholder:text-purple-400/50
+                               placeholder:font-medium
                                focus:border-purple-500 dark:focus:border-purple-500/80
                                focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
                                dark:focus:bg-[#140a20]
@@ -268,7 +270,8 @@ export const MM1: React.FC = () => {
                 className="block w-full rounded-xl border border-slate-300 dark:border-purple-800
                            bg-slate-50 dark:bg-[#0e0715]
                            text-slate-900 dark:text-purple-100
-                           placeholder:text-slate-400 dark:placeholder:text-purple-900
+                           placeholder:text-slate-400 dark:placeholder:text-purple-300
+                           placeholder:font-medium
                            focus:border-purple-500 dark:focus:border-purple-500/80
                            focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
                            dark:focus:bg-[#140a20]

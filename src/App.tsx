@@ -9,7 +9,7 @@ import OptionsView from './views/OptionsView';
 export type ActiveView = 'home' | 'calculator' | 'options';
 
 function AppContent() {
-  const [activeView, setActiveView] = useState<ActiveView>('home');
+  const [activeView, setActiveView] = useState<ActiveView>('calculator');
   const { isDark } = useTheme();
 
   return (

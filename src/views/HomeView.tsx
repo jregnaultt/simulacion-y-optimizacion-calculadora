@@ -1,155 +1,109 @@
 interface HomeViewProps {
-  onNavigate: (view: "home" | "calculator" | "options") => void;
+    onNavigate: (view: "home" | "calculator" | "options") => void;
 }
 
 export default function HomeView({ onNavigate }: HomeViewProps) {
-  return (
-    <div className="flex flex-col min-h-dvh text-slate-900 dark:text-purple-50">
-      {/* ═══════════ HEADER ═══════════ */}
-      <header
-        className="bg-gradient-to-b from-purple-100 to-slate-50
-                         dark:from-purple-950 dark:to-[#0b0510]
-                         border-b border-purple-200 dark:border-purple-900"
-      >
-        <div className="flex flex-col items-center gap-4 px-6 pt-14 pb-10">
-          {/* Logo */}
-          <img
-            src="/logo.png"
-            alt="LambdaPro Logo"
-            className="w-24 h-24 rounded-full shadow-lg shadow-purple-900/60
-                       drop-shadow-[0_0_15px_rgba(168,85,247,0.4)] dark:drop-shadow-[0_0_25px_rgba(168,85,247,0.6)]
-                       animate-[float_3s_ease-in-out_infinite]"
-          />
+    return (
+        <div className="flex flex-col min-h-[100dvh] bg-slate-50 dark:bg-[#06040d] text-slate-900 dark:text-purple-100 font-sans selection:bg-purple-200 dark:selection:bg-purple-900/40 animate-[fadeSlideUp_0.3s_ease_both]">
 
-          {/* Texto */}
-          <div className="text-center">
-            <h1 className="text-[1.9rem] font-extrabold tracking-tight">
-              Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
-            </h1>
-            <p
-              className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-400
-                          uppercase tracking-[1.5px] mt-2"
-            >
-              Teoría de Colas · Análisis de Servidores
-            </p>
-          </div>
-        </div>
-      </header>
+            {/* ═══════════ HEADER ═══════════ */}
+            <header className="bg-gradient-to-b from-purple-100 to-slate-50
+                         dark:from-purple-950 dark:to-[#080510]
+                         border-b border-purple-200 dark:border-purple-900">
+                <div className="flex flex-col items-center gap-4 px-6 pt-14 pb-10">
 
-      {/* ═══════════ CONTENIDO ═══════════ */}
-      <div className="flex flex-col flex-1 px-5 py-8 gap-8">
-        {/* Header Section */}
-        <div className="flex flex-col gap-2">
-          <h2 className="text-[1.3rem] font-bold text-slate-800 dark:text-purple-100">
-            Análisis de Sistemas
-          </h2>
-          <p className="text-[0.9rem] text-slate-600 dark:text-purple-300 leading-relaxed">
-            Módulo integral para el cálculo de métricas en sistemas de colas
-            (M/M/1, M/M/1/K y M/M/c).
-          </p>
-        </div>
+                    {/* Logo replacement with Stylized Rho */}
+                    <div className="w-24 h-24 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
+                        <img src="/logo.png" alt="Logo Dark" className="w-24 h-24 object-contain hidden dark:block" />
+                        <img src="/lightlogo.png" alt="Logo Light" className="w-24 h-24 object-contain block dark:hidden" />
+                    </div>
 
-        {/* Separador */}
-        <div className="h-px w-full bg-slate-200 dark:bg-purple-900" />
-
-        {/* Acceso rápido */}
-        <div className="flex flex-col gap-4">
-          <p
-            className="text-[0.7rem] font-bold text-purple-600 dark:text-purple-600
-                        uppercase tracking-[1.5px]"
-          >
-            Acceso rápido
-          </p>
-
-          {/* Botón card */}
-          <button
-            type="button"
-            onClick={() => onNavigate("calculator")}
-            className="group w-full text-left
-                       bg-white dark:bg-purple-950
-                       border border-purple-300 dark:border-purple-800
-                       rounded-2xl
-                       transition-all duration-200
-                       hover:border-purple-500 dark:hover:border-purple-600
-                       hover:-translate-y-0.5
-                       hover:shadow-xl hover:shadow-purple-100 dark:hover:shadow-black/50
-                       active:scale-[0.99]
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
-          >
-            <div className="p-5 flex flex-col">
-              {/* Fila: ícono + badge */}
-              <div className="flex items-center justify-between">
-                <div
-                  className="w-12 h-12 rounded-xl
-                                bg-purple-100 dark:bg-purple-900/50
-                                flex items-center justify-center text-purple-600 dark:text-purple-400"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
-                    />
-                  </svg>
+                    {/* Texto */}
+                    <div className="text-center">
+                        <h1 className="text-[1.8rem] font-extrabold tracking-tight">
+                            Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro
+                        </h1>
+                        <p className="text-[0.7rem] font-semibold text-purple-600 dark:text-purple-300
+                                uppercase tracking-[1.5px] mt-2">
+                            Teoría de Colas · Análisis de Servidores
+                        </p>
+                    </div>
                 </div>
-                <span
-                  className="text-[0.65rem] font-bold uppercase tracking-wide
-                                 text-purple-600 dark:text-purple-400
-                                 bg-purple-50 dark:bg-purple-900/30
-                                 border border-purple-200 dark:border-purple-800/50
-                                 px-3 py-1 rounded-full"
-                >
-                  Calculadora
-                </span>
-              </div>
+            </header>
 
-              {/* Textos */}
-              <div className="flex flex-col gap-1.5 pt-4">
-                <h3 className="text-[1.1rem] font-bold text-slate-800 dark:text-purple-50">
-                  Simulación de Servidores
-                </h3>
-                <p className="text-[0.8rem] font-semibold text-purple-600 dark:text-purple-400">
-                  M/M/1, M/M/1/K &amp; M/M/c
-                </p>
-                <p className="text-[0.85rem] text-slate-600 dark:text-purple-300 leading-relaxed">
-                  Calcule utilización, tiempos promedios y distribución
-                  estadística de usuarios en el sistema.
-                </p>
-              </div>
-              {/* Footer del card */}
-              <div
-                className="flex items-center justify-between
-                              pt-4 border-t border-slate-200 dark:border-purple-800/60"
-              >
-                <span className="text-[0.85rem] font-semibold text-purple-600 dark:text-purple-400">
-                  Abrir calculadora
-                </span>
-                <span
-                  className="text-purple-600 dark:text-purple-500 text-lg
-                                 transition-transform duration-200 group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </div>
-            </div>
-          </button>
+            {/* ═══════════ CONTENIDO ═══════════ */}
+            <main className="flex-1 max-w-2xl mx-auto px-5 py-8 space-y-8">
+
+                {/* Intro */}
+                <section className="space-y-3">
+                    <h2 className="text-xl font-bold text-slate-800 dark:text-purple-100">
+                        Optimiza tus sistemas de servicio
+                    </h2>
+                    <p className="text-slate-600 dark:text-purple-200/70 text-sm max-w-[280px] mx-auto leading-relaxed">
+                        Selecciona el tipo de sistema de colas que deseas analizar hoy.
+                        Calcula tiempos promedio, niveles de ocupación y probabilidades para tomar decisiones informadas.
+                    </p>
+                </section>
+
+                {/* Acceso Rápido */}
+                <div className="grid grid-cols-1 gap-4">
+                    <button
+                        onClick={() => onNavigate('calculator')}
+                        className="group relative flex items-center gap-5 p-6 bg-white dark:bg-[#12091c] rounded-2xl
+                                 border border-slate-200 dark:border-purple-900/40 shadow-sm
+                                 hover:border-purple-400 dark:hover:border-purple-500/60 transition-all duration-300
+                                 text-left overflow-hidden translate-y-0 hover:-translate-y-1"
+                    >
+                        <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span className="text-4xl">📊</span>
+                        </div>
+
+                        <div className="w-16 h-16 rounded-xl bg-purple-100 dark:bg-purple-900/40 
+                                     flex items-center justify-center text-3xl
+                                     group-hover:scale-110 transition-transform">
+                            🧮
+                        </div>
+
+                        <div className="space-y-1 flex-1">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-lg font-bold text-slate-800 dark:text-purple-100 group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                                    Calculadora de Colas
+                                </h3>
+                                <span className="text-purple-600 dark:text-purple-400 transition-transform group-hover:translate-x-1">→</span>
+                            </div>
+                            <p className="text-sm text-slate-500 dark:text-purple-400/60 font-medium">
+                                Modelos M/M/1, M/M/1/K, M/M/c y M/M/c/N
+                            </p>
+                            <p className="text-xs text-slate-400 dark:text-purple-600/70 mt-2 leading-relaxed">
+                                Ingresa tasas de llegada, servicio y servidores para obtener métricas de utilización y tiempos de espera.
+                            </p>
+                        </div>
+                    </button>
+
+                    <div className="p-6 bg-purple-50/50 dark:bg-purple-950/20 rounded-2xl border border-dashed border-purple-200 dark:border-purple-900/40">
+                        <h4 className="text-[0.7rem] font-bold text-purple-600 dark:text-purple-500 uppercase tracking-widest mb-4">
+                            Recursos Rápidos
+                        </h4>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 bg-white dark:bg-[#12091c]/50 rounded-xl border border-purple-100 dark:border-purple-800/30">
+                                <span className="block text-2xl mb-1">📖</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-purple-300">Guía de Uso</span>
+                            </div>
+                            <div className="p-4 bg-white dark:bg-[#12091c]/50 rounded-xl border border-purple-100 dark:border-purple-800/30">
+                                <span className="block text-2xl mb-1">📝</span>
+                                <span className="text-xs font-bold text-slate-700 dark:text-purple-300">Fórmulas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer simple */}
+                <footer className="pt-12 pb-6 text-center border-t border-slate-100 dark:border-purple-900/10">
+                    <p className="text-[0.65rem] text-slate-400 dark:text-purple-800 font-bold tracking-widest uppercase">
+                        LambdaPro • Teoría de Colas • 2026
+                    </p>
+                </footer>
+            </main>
         </div>
-      </div>
-
-      {/* ═══════════ FOOTER ═══════════ */}
-      <footer
-        className="text-center px-5 py-6 text-[0.72rem]
-                         text-slate-400 dark:text-purple-900"
-      >
-        Lambda<span className="font-serif italic mx-[1px]">ρ</span>ro · v1.0
-      </footer>
-    </div>
-  );
+    );
 }

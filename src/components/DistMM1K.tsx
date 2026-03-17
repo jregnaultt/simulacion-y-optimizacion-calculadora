@@ -39,8 +39,6 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
         if (n > 0 && 1 - cumulative < tolerance) break;
     }
 
-    // Pn máximo para escalar las barras de progreso
-    const maxPn = Math.max(...items.map(i => i.pn));
     // Suma total de Pn para la fila de verificación
     const totalPn = items.reduce((sum, i) => sum + i.pn, 0);
 
@@ -61,17 +59,10 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
                                 <tr key={item.n} className="hover:bg-slate-50/50 dark:hover:bg-purple-900/10 transition-colors">
                                     <td className="py-2.5 px-3 text-sm font-bold text-slate-900 dark:text-purple-50 text-center">{item.n}</td>
                                     <td className="py-2.5 px-4 text-sm font-medium text-slate-600 dark:text-purple-300 text-center tabular-nums">
-                                        {formatSmart(item.pn, decimals)}
-                                        {/* Mini barra de progreso proporcional a Pn */}
-                                        <div className="mt-1 h-1.5 w-full bg-slate-100 dark:bg-purple-950/60 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-purple-400 dark:bg-purple-500 rounded-full transition-all duration-300"
-                                                style={{ width: `${(item.pn / maxPn) * 100}%` }}
-                                            />
-                                        </div>
+                                        {item.pn.toFixed(4)}
                                     </td>
                                     <td className="py-2.5 px-4 text-sm font-medium text-slate-600 dark:text-purple-300 text-center tabular-nums">
-                                        {formatSmart(Math.min(1, item.fn), decimals)}
+                                        {Math.min(1, item.fn).toFixed(4)}
                                     </td>
                                 </tr>
                             ))}
