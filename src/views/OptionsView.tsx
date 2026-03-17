@@ -87,76 +87,16 @@ export default function OptionsView() {
   const { isDark, toggle } = useTheme();
   const { decimals, tolerance, setDecimals, setTolerance } = useSettings();
 
-    return (
-        <div className="p-6 max-w-xl mx-auto space-y-6 pb-24 animate-[fadeSlideUp_0.3s_ease_both]">
-            <header className="px-1">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-purple-50 tracking-tight">
-                    Configuración
-                </h1>
-                <p className="text-sm text-slate-500 dark:text-purple-400/60 font-medium mt-1">
-                    Personaliza tu experiencia con la calculadora
-                </p>
-            </header>
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-            <section className="bg-white/70 dark:bg-[#12091c]/90 backdrop-blur-md border border-slate-200 dark:border-purple-900/40 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center justify-between gap-6">
-                    <div className="space-y-1">
-                        <h2 className="text-base font-bold text-slate-800 dark:text-purple-100 uppercase tracking-wide">
-                            Modo Visual
-                        </h2>
-                        <p className="text-sm text-slate-500 dark:text-purple-400/50 italic">
-                            Cambia entre el tema claro y oscuro
-                        </p>
-                    </div>
+  const handleToleranceChange = (val: number) => {
+    setTolerance(val);
+    const newDecimals = Math.abs(Math.log10(val));
+    setDecimals(newDecimals);
 
-                    <button
-                        onClick={toggle}
-                        className={`
-                            relative inline-flex h-9 w-16 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20
-                            ${isDark ? 'bg-purple-600 shadow-[0_0_12px_rgba(147,51,234,0.4)]' : 'bg-slate-200'}
-                        `}
-                    >
-                        <span className="sr-only">Cambiar modo</span>
-                        <div
-                            className={`
-                                flex items-center justify-center h-7 w-7 transform rounded-full bg-white shadow-md transition-transform duration-300
-                                ${isDark ? 'translate-x-[1.9rem]' : 'translate-x-1'}
-                            `}
-                        >
-                            <div className="text-purple-600">
-                                {isDark ? <MoonIcon /> : <SunIcon />}
-                            </div>
-                        </div>
-                    </button>
-                </div>
-            </section>
-
-            <section className="bg-white/70 dark:bg-[#12091c]/90 backdrop-blur-md border border-slate-200 dark:border-purple-900/40 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center justify-between gap-6">
-                    <div className="space-y-1">
-                        <h2 className="text-base font-bold text-slate-800 dark:text-purple-100 uppercase tracking-wide">
-                            Precisión Decimal
-                        </h2>
-                        <p className="text-sm text-slate-500 dark:text-purple-400/50 italic leading-tight">
-                            Número de decimales para los resultados
-                        </p>
-                    </div>
-
-                    <div className="relative w-24">
-                        <input
-                            type="text"
-                            defaultValue="4"
-                            className="w-full bg-slate-50/50 dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 rounded-xl px-4 py-2.5 text-base text-center text-slate-900 dark:text-purple-50 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all font-mono shadow-inner"
-                            readOnly
-                        />
-                        <div className="absolute -right-1 -top-1">
-                            <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.6)] animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    );
+    setToastMessage(`Tolerancia: ${val} (Decimals auto: ${newDecimals})`);
     setToastVisible(true);
 
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -198,8 +138,8 @@ export default function OptionsView() {
             <button
               onClick={toggle}
               className={`
-                relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none
-                ${isDark ? "bg-purple-600" : "bg-slate-200"}
+                relative inline-flex h-12 w-24 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20
+                ${isDark ? "bg-purple-600 shadow-[0_0_12px_rgba(147,51,234,0.4)]" : "bg-slate-200"}
               `}
             >
               <span className="sr-only">Cambiar modo</span>
@@ -209,7 +149,9 @@ export default function OptionsView() {
                   ${isDark ? "translate-x-12" : "translate-x-1"}
                 `}
               >
-                {isDark ? <MoonIcon /> : <SunIcon />}
+                <div className="text-purple-600">
+                  {isDark ? <MoonIcon /> : <SunIcon />}
+                </div>
               </div>
             </button>
           </div>

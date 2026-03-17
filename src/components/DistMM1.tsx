@@ -67,20 +67,20 @@ export const DistMM1: React.FC<DistMM1Props> = ({ rho }) => {
                                         {fnValue.toFixed(4)}
                                     </td>
                                 </tr>
-                            ))}
-                            {/* Fila de verificación: suma total de Pn */}
-                            <tr className="bg-slate-50/80 dark:bg-purple-950/40 border-t-2 border-slate-200 dark:border-purple-800/60">
-                                <td className="py-2.5 px-3 text-sm font-bold text-slate-900 dark:text-purple-50 text-center">Σ</td>
-                                <td className="py-2.5 px-4 text-sm font-bold text-slate-900 dark:text-purple-200 text-center tabular-nums">
-                                    {formatSmart(totalPn, decimals)}
-                                </td>
-                                <td className="py-2.5 px-4 text-sm font-medium text-slate-400 dark:text-purple-700 text-center italic">
-                                    —
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            );
+                        })}
+                        {/* Fila de verificación: suma total de Pn */}
+                        <tr className="bg-slate-50/80 dark:bg-purple-950/40 border-t-2 border-slate-200 dark:border-purple-800/60">
+                            <td className="py-2.5 px-3 text-sm font-bold text-slate-900 dark:text-purple-50 text-center">Σ</td>
+                            <td className="py-2.5 px-4 text-sm font-bold text-slate-900 dark:text-purple-200 text-center tabular-nums">
+                                {formatSmart(totalPn, decimals)}
+                            </td>
+                            <td className="py-2.5 px-4 text-sm font-medium text-slate-400 dark:text-purple-700 text-center italic">
+                                —
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <p className="mt-3 text-[0.65rem] text-slate-400 dark:text-purple-800 font-medium italic">
                 Distribución de probabilidad del sistema (n=0 a 5)
