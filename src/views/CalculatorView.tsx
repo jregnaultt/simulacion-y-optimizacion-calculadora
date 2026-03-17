@@ -139,8 +139,9 @@ export default function CalculatorView() {
                        border border-slate-300 dark:border-purple-800/60
                        rounded-xl px-4 py-3
                        text-left transition-all duration-150
-                       hover:border-purple-500 dark:hover:border-purple-600/60
-                       dark:hover:bg-purple-900/30
+                       hover:border-purple-400 dark:hover:border-purple-600/60
+                       hover:bg-slate-50 dark:hover:bg-purple-900/30
+                       text-slate-900 dark:text-purple-50
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/40"
             aria-haspopup="listbox"
             aria-expanded={open}
@@ -186,10 +187,10 @@ export default function CalculatorView() {
             <ul
               role="listbox"
               className="absolute z-10 top-full mt-2 left-0 right-0
-                         bg-[#1a0b33] dark:bg-[#1a0b33]
-                         border border-purple-800/40
+                         bg-white dark:bg-[#1a0b33]
+                         border border-slate-200 dark:border-purple-800/40
                          rounded-xl overflow-hidden
-                         shadow-2xl shadow-black/80"
+                         shadow-2xl shadow-black/10 dark:shadow-black/80"
             >
               {SERVER_OPTIONS.map((opt) => (
                 <li
@@ -204,28 +205,28 @@ export default function CalculatorView() {
                       setCapacity("infinita"); // Reset sub-tab
                       setOpen(false);
                     }}
-                     className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
-                                 transition-all duration-100
-                                 ${selectedServer === opt.value
-                         ? "bg-purple-400 text-purple-950 shadow-inner"
-                         : "text-purple-100/90 hover:bg-purple-900/50"
-                       }`}
+                      className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
+                                  transition-all duration-100
+                                  ${selectedServer === opt.value
+                          ? "bg-purple-100 dark:bg-purple-400 text-purple-900 dark:text-purple-950 shadow-inner"
+                          : "text-slate-600 dark:text-purple-100/90 hover:bg-slate-50 dark:hover:bg-purple-900/50"
+                        }`}
                   >
-                    <span className={`${selectedServer === opt.value
-                        ? "bg-purple-950/10 text-purple-900"
-                        : "text-purple-400 bg-purple-950/30"}
-                         p-1.5 rounded-md transition-colors`}>
+                     <span className={`${selectedServer === opt.value
+                         ? "bg-purple-950/10 text-purple-900"
+                         : "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30"}
+                          p-1.5 rounded-md transition-colors`}>
                       {opt.icon}
                     </span>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-bold tracking-tight">
-                        {opt.label}
-                      </span>
-                      <span className={`text-[0.65rem] font-medium
-                         ${selectedServer === opt.value ? "text-purple-800" : "text-purple-400"}`}>
-                        {opt.subtitle}
-                      </span>
-                    </div>
+                     <div className="flex flex-col">
+                       <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+                         {opt.label}
+                       </span>
+                       <span className={`text-[0.65rem] font-medium
+                          ${selectedServer === opt.value ? "text-purple-800" : "text-slate-400 dark:text-purple-400"}`}>
+                         {opt.subtitle}
+                       </span>
+                     </div>
                     {selectedServer === opt.value && (
                       <span className="ms-auto">
                         <svg
@@ -234,7 +235,7 @@ export default function CalculatorView() {
                           viewBox="0 0 24 24"
                           strokeWidth={2.5}
                           stroke="currentColor"
-                          className="w-5 h-5 text-purple-950"
+                          className="w-5 h-5 text-purple-900 dark:text-purple-950"
                         >
                           <path
                             strokeLinecap="round"
