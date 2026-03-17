@@ -1,4 +1,3 @@
-import { useTheme } from '../context/ThemeContext';
 
 interface HomeViewProps {
     onNavigate: (view: "calculator") => void;

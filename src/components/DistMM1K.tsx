@@ -39,8 +39,6 @@ export const DistMM1K: React.FC<DistMM1KProps> = ({ rho, k }) => {
         if (n > 0 && 1 - cumulative < tolerance) break;
     }
 
-    // Pn máximo para escalar las barras de progreso
-    const maxPn = Math.max(...items.map(i => i.pn));
     // Suma total de Pn para la fila de verificación
     const totalPn = items.reduce((sum, i) => sum + i.pn, 0);
 
