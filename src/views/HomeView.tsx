@@ -1,5 +1,5 @@
 interface HomeViewProps {
-  onNavigate: (view: "calculator") => void;
+  onNavigate: (view: "home" | "calculator" | "options") => void;
 }
 
 export default function HomeView({ onNavigate }: HomeViewProps) {
@@ -45,7 +45,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
           </h2>
           <p className="text-[0.9rem] text-slate-600 dark:text-purple-300 leading-relaxed">
             Módulo integral para el cálculo de métricas en sistemas de colas
-            (M/M/1 y M/M/1/K).
+            (M/M/1, M/M/1/K y M/M/c).
           </p>
         </div>
 
@@ -111,12 +111,12 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               </div>
 
               {/* Textos */}
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1.5 pt-4">
                 <h3 className="text-[1.1rem] font-bold text-slate-800 dark:text-purple-50">
                   Simulación de Servidores
                 </h3>
                 <p className="text-[0.8rem] font-semibold text-purple-600 dark:text-purple-400">
-                  M/M/1 &amp; M/M/1/K
+                  M/M/1, M/M/1/K &amp; M/M/c
                 </p>
                 <p className="text-[0.85rem] text-slate-600 dark:text-purple-300 leading-relaxed">
                   Calcule utilización, tiempos promedios y distribución
