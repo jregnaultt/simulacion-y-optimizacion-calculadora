@@ -68,10 +68,9 @@ function ToleranceToast({
         text-white text-sm font-semibold
         rounded-2xl shadow-xl shadow-purple-900/40
         transition-all duration-500 ease-out
-        ${
-          visible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-4 pointer-events-none"
+        ${visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-4 pointer-events-none"
         }
       `}
     >
@@ -114,13 +113,18 @@ export default function OptionsView() {
       <ToleranceToast message={toastMessage} visible={toastVisible} />
 
       <div className="p-6 max-w-2xl mx-auto space-y-8 pb-24">
-        <header>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-            Configuración
-          </h1>
-          <p className="text-slate-500 dark:text-purple-400/60 mt-2">
-            Configuración de preferencias del sistema
-          </p>
+        <header className="flex items-center gap-4">
+          <div className="w-12 h-12 flex items-center justify-center">
+            <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight">
+              Configuración
+            </h1>
+            <p className="text-xs text-slate-500 dark:text-purple-400/60 font-medium">
+              Preferencias del sistema
+            </p>
+          </div>
         </header>
 
         {/* ─── Modo Visual ─── */}
@@ -176,10 +180,9 @@ export default function OptionsView() {
                   onClick={() => setDecimals(n)}
                   className={`
                     min-w-[2.5rem] h-10 rounded-xl text-sm font-bold transition-all duration-200
-                    ${
-                      decimals === n
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
-                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                    ${decimals === n
+                      ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
+                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
                     }
                   `}
                 >
@@ -213,10 +216,9 @@ export default function OptionsView() {
                   onClick={() => handleToleranceChange(opt.value)}
                   className={`
                     px-3 h-10 rounded-xl text-sm font-bold transition-all duration-200
-                    ${
-                      tolerance === opt.value
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
-                        : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
+                    ${tolerance === opt.value
+                      ? "bg-purple-600 text-white shadow-md shadow-purple-500/30"
+                      : "bg-white dark:bg-[#0e0715] border border-slate-300 dark:border-purple-800/70 text-slate-600 dark:text-purple-400 hover:border-purple-500 dark:hover:border-purple-600/80"
                     }
                   `}
                 >

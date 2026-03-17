@@ -77,9 +77,8 @@ export default function CalculatorView() {
         >
           <div className="flex items-center gap-3">
             {/* Logo replacement with Stylized Rho */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 
-                            flex items-center justify-center shadow-lg shadow-purple-900/30 border border-white/20">
-              <span className="text-white font-serif italic text-xl -mt-0.5">ρ</span>
+            <div className="w-14 h-14 flex items-center justify-center">
+              <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
             </div>
             <div>
               <h1 className="text-[1.1rem] font-extrabold tracking-tight leading-none">
@@ -99,11 +98,8 @@ export default function CalculatorView() {
                            transition-all duration-300"
         >
           <div className="flex flex-col items-center gap-4 px-6 pt-12 pb-10">
-            {/* Logo replacement with Stylized Rho */}
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 
-                            flex items-center justify-center shadow-xl shadow-purple-900/40 border-2 border-white/20
-                            animate-[float_3s_ease-in-out_infinite]">
-              <span className="text-white font-serif italic text-4xl -mt-1 shadow-sm">ρ</span>
+            <div className="w-20 h-20 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
+              <img src="/logo.png" alt="Logo" className="w-20 h-20 object-contain" />
             </div>
 
             {/* Texto */}
@@ -208,11 +204,10 @@ export default function CalculatorView() {
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-3.5 text-left
                                 transition-colors duration-100
-                                ${
-                                  selectedServer === opt.value
-                                    ? "bg-purple-50 dark:bg-purple-900/40"
-                                    : "hover:bg-slate-50 dark:hover:bg-purple-900/20"
-                                }`}
+                                ${selectedServer === opt.value
+                        ? "bg-purple-50 dark:bg-purple-900/40"
+                        : "hover:bg-slate-50 dark:hover:bg-purple-900/20"
+                      }`}
                   >
                     <span className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/40 p-1.5 rounded-md">
                       {opt.icon}
@@ -258,10 +253,9 @@ export default function CalculatorView() {
             <button
               onClick={() => setCapacity("infinita")}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200
-                ${
-                  capacity === "infinita"
-                    ? "bg-white dark:bg-[#112217] text-purple-700 dark:text-purple-300 shadow-sm"
-                    : "text-slate-500 dark:text-purple-700/80 hover:text-slate-700 dark:hover:text-purple-400"
+                ${capacity === "infinita"
+                  ? "bg-white dark:bg-[#112217] text-purple-700 dark:text-purple-300 shadow-sm"
+                  : "text-slate-500 dark:text-purple-700/80 hover:text-slate-700 dark:hover:text-purple-400"
                 }`}
             >
               Capacidad Infinita
@@ -272,10 +266,9 @@ export default function CalculatorView() {
             <button
               onClick={() => setCapacity("finita")}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200
-                ${
-                  capacity === "finita"
-                    ? "bg-white dark:bg-[#112217] text-purple-700 dark:text-purple-300 shadow-sm"
-                    : "text-slate-500 dark:text-purple-700/80 hover:text-slate-700 dark:hover:text-purple-400"
+                ${capacity === "finita"
+                  ? "bg-white dark:bg-[#112217] text-purple-700 dark:text-purple-300 shadow-sm"
+                  : "text-slate-500 dark:text-purple-700/80 hover:text-slate-700 dark:hover:text-purple-400"
                 }`}
             >
               Capacidad Finita
@@ -312,7 +305,7 @@ export default function CalculatorView() {
             </p>
           </div>
         )}
-        
+
         {/* Renderizado condicional de los componentes de cálculo */}
         {selectedServer === "single" && capacity === "infinita" && <MM1 />}
         {selectedServer === "single" && capacity === "finita" && <MM1K />}

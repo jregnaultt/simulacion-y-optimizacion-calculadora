@@ -14,10 +14,8 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                 <div className="flex flex-col items-center gap-4 px-6 pt-14 pb-10">
 
                     {/* Logo replacement with Stylized Rho */}
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 
-                                flex items-center justify-center shadow-xl shadow-purple-900/40 border-2 border-white/20
-                                animate-[float_3s_ease-in-out_infinite]">
-                        <span className="text-white font-serif italic text-4xl -mt-1 shadow-sm">ρ</span>
+                    <div className="w-24 h-24 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
+                        <img src="/logo.png" alt="Logo" className="w-24 h-24 object-contain" />
                     </div>
 
                     {/* Texto */}
@@ -35,14 +33,14 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
 
             {/* ═══════════ CONTENIDO ═══════════ */}
             <main className="flex-1 max-w-2xl mx-auto px-5 py-8 space-y-8">
-                
+
                 {/* Intro */}
                 <section className="space-y-3">
                     <h2 className="text-xl font-bold text-slate-800 dark:text-purple-100">
                         Optimiza tus sistemas de servicio
                     </h2>
                     <p className="text-sm text-slate-500 dark:text-purple-400/70 leading-relaxed">
-                        Analiza colas de espera con precisión matemática. 
+                        Analiza colas de espera con precisión matemática.
                         Calcula tiempos promedio, niveles de ocupación y probabilidades para tomar decisiones informadas.
                     </p>
                 </section>
@@ -59,13 +57,13 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                         <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                             <span className="text-4xl">📊</span>
                         </div>
-                        
+
                         <div className="w-16 h-16 rounded-xl bg-purple-100 dark:bg-purple-900/40 
                                      flex items-center justify-center text-3xl
                                      group-hover:scale-110 transition-transform">
                             🧮
                         </div>
-                        
+
                         <div className="space-y-1 flex-1">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-lg font-bold text-slate-800 dark:text-purple-100 group-hover:text-purple-600 dark:group-hover:text-purple-400">
@@ -81,7 +79,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                             </p>
                         </div>
                     </button>
-                    
+
                     <div className="p-6 bg-purple-50/50 dark:bg-purple-950/20 rounded-2xl border border-dashed border-purple-200 dark:border-purple-900/40">
                         <h4 className="text-[0.7rem] font-bold text-purple-600 dark:text-purple-500 uppercase tracking-widest mb-4">
                             Recursos Rápidos
