@@ -40,6 +40,14 @@ import {
   calcW_MM1K,
   calcWq_MM1K,
   calcLq_MM1K,
+  calcP0_MMCN,
+  calcPn_MMCN,
+  calcLq_MMCN,
+  calcL_MMCN,
+  calcLambdaE_MMCN,
+  calcLambdaLost_MMCN,
+  calcW_MMCN,
+  calcWq_MMCN,
 } from './queuingFormulas';
 
 // ╔══════════════════════════════════════════════════════════╗
@@ -461,5 +469,88 @@ describe('Edge Cases — Valores extremos y errores', () => {
 
     // Lq debe ser igual a λ * Wq
     expect(Lq).toBeCloseTo(lambda * Wq, 10);
+  });
+});
+
+// ╔══════════════════════════════════════════════════════════╗
+// ║        MODELO M/M/c/N (Multiservidor + Cap finita)      ║
+// ╚══════════════════════════════════════════════════════════╝
+
+describe('Modelo M/M/c/N — Fórmulas básicas', () => {
+
+  // Caso de referencia: λ=5, μ=2, c=3, N=6
+  it('la suma de Pn(0..N) debe ser ≈ 1.0', () => {
+    const p0 = calcP0_MMCN(5, 2, 3, 6);
+    let suma = 0;
+    for (let n = 0; n <= 6; n++) {
+      suma += calcPn_MMCN(5, 2, 3, 6, n, p0);
+    }
+    expect(suma).toBeCloseTo(1.0, 10);
+  });
+
+  it('Pn(n > N) debe retornar 0', () => {
+    const p0 = calcP0_MMCN(5, 2, 3, 6);
+    expect(calcPn_MMCN(5, 2, 3, 6, 7, p0)).toBe(0);
+    expect(calcPn_MMCN(5, 2, 3, 6, 100, p0)).toBe(0);
+  });
+
+  it('λ efectiva + λ perdida = λ (conservación)', () => {
+    const lambda = 5;
+    const p0 = calcP0_MMCN(lambda, 2, 3, 6);
+    const lambdaE = calcLambdaE_MMCN(lambda, 2, 3, 6, p0);
+    const lambdaP = calcLambdaLost_MMCN(lambda, 2, 3, 6, p0);
+    expect(lambdaE + lambdaP).toBeCloseTo(lambda, 10);
+  });
+
+  it('W y Wq deben ser positivos', () => {
+    const p0 = calcP0_MMCN(5, 2, 3, 6);
+    const l = calcL_MMCN(5, 2, 3, 6, p0);
+    const lambdaE = calcLambdaE_MMCN(5, 2, 3, 6, p0);
+    const w = calcW_MMCN(l, lambdaE);
+    const wq = calcWq_MMCN(w, 2);
+    expect(w).toBeGreaterThan(0);
+    expect(wq).toBeGreaterThanOrEqual(0);
+  });
+
+  it('Lq debe ser ≥ 0', () => {
+    const p0 = calcP0_MMCN(5, 2, 3, 6);
+    const lq = calcLq_MMCN(5, 2, 3, 6, p0);
+    expect(lq).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe('M/M/c/N — Caso especial ρ=1', () => {
+  // λ=6, μ=2, c=3 → ρ = 6/(3*2) = 1
+  it('la suma de Pn(0..N) sigue siendo ≈ 1.0 con ρ=1', () => {
+    const p0 = calcP0_MMCN(6, 2, 3, 8);
+    let suma = 0;
+    for (let n = 0; n <= 8; n++) {
+      suma += calcPn_MMCN(6, 2, 3, 8, n, p0);
+    }
+    expect(suma).toBeCloseTo(1.0, 8);
+  });
+
+  it('λ efectiva + λ perdida = λ con ρ=1', () => {
+    const p0 = calcP0_MMCN(6, 2, 3, 8);
+    const lambdaE = calcLambdaE_MMCN(6, 2, 3, 8, p0);
+    const lambdaP = calcLambdaLost_MMCN(6, 2, 3, 8, p0);
+    expect(lambdaE + lambdaP).toBeCloseTo(6, 10);
+  });
+});
+
+describe('M/M/c/N — Con ρ > 1 (λ=10, μ=2, c=3, N=6)', () => {
+  it('la suma de Pn(0..N) sigue siendo ≈ 1.0', () => {
+    const p0 = calcP0_MMCN(10, 2, 3, 6);
+    let suma = 0;
+    for (let n = 0; n <= 6; n++) {
+      suma += calcPn_MMCN(10, 2, 3, 6, n, p0);
+    }
+    expect(suma).toBeCloseTo(1.0, 8);
+  });
+
+  it('λ perdida debe ser significativa con ρ > 1', () => {
+    const p0 = calcP0_MMCN(10, 2, 3, 6);
+    const lambdaP = calcLambdaLost_MMCN(10, 2, 3, 6, p0);
+    expect(lambdaP).toBeGreaterThan(0);
   });
 });
