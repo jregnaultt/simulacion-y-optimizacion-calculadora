@@ -209,6 +209,66 @@ export const getTheoreticalStatsPoisson = (
   stdDev: Math.sqrt(lambda),
 });
 
+// ── Multivariable Simulation (n × k matrix) ────────────
+
+export interface MultiVariableColumnStats {
+  mean: number;
+  stdDev: number;
+}
+
+export interface MultiVariableResult {
+  /** n rows × k columns matrix of simulated values */
+  matrix: number[][];
+  /** Per-column statistics (x̄ and s) */
+  columnStats: MultiVariableColumnStats[];
+  /** Number of iterations (rows) */
+  n: number;
+  /** Number of variables (columns) */
+  k: number;
+}
+
+/**
+ * Run a multivariable discrete simulation producing an n×k matrix.
+ * Each column is an independent sequence generated via the inverse
+ * transform method on the given discrete distribution (e.g. Poisson).
+ *
+ * Column stats use the **sample** standard deviation (dividing by n−1).
+ */
+export const runMultivariableDiscreteSimulation = (
+  rows: DiscreteRow[],
+  n: number,
+  k: number,
+): MultiVariableResult => {
+  const cumDist = buildCumulativeDistribution(rows);
+
+  // Build n × k matrix
+  const matrix: number[][] = [];
+  for (let i = 0; i < n; i++) {
+    const row: number[] = [];
+    for (let j = 0; j < k; j++) {
+      const r = Math.random();
+      row.push(discreteLookup(cumDist, r));
+    }
+    matrix.push(row);
+  }
+
+  // Per-column statistics
+  const columnStats: MultiVariableColumnStats[] = [];
+  for (let j = 0; j < k; j++) {
+    let sum = 0;
+    for (let i = 0; i < n; i++) sum += matrix[i][j];
+    const mean = sum / n;
+
+    let sumSqDiff = 0;
+    for (let i = 0; i < n; i++) sumSqDiff += (matrix[i][j] - mean) ** 2;
+    const stdDev = n > 1 ? Math.sqrt(sumSqDiff / (n - 1)) : 0;
+
+    columnStats.push({ mean, stdDev });
+  }
+
+  return { matrix, columnStats, n, k };
+};
+
 // ── Continuous Distributions ───────────────────────────
 
 export type ContinuousDistType =
@@ -301,6 +361,48 @@ export const runContinuousSimulation = (
     histogram,
     convergence: buildConvergence(values),
   };
+};
+
+// ── Multivariable Continuous Simulation (n × k matrix) ──
+
+/**
+ * Run a multivariable continuous simulation producing an n×k matrix.
+ * Each column is an independent sequence generated via the corresponding
+ * continuous distribution generator.
+ *
+ * Column stats use the **sample** standard deviation (dividing by n−1).
+ */
+export const runMultivariableContinuousSimulation = (
+  type: ContinuousDistType,
+  params: Record<string, number>,
+  n: number,
+  k: number,
+): MultiVariableResult => {
+  // Build n × k matrix
+  const matrix: number[][] = [];
+  for (let i = 0; i < n; i++) {
+    const row: number[] = [];
+    for (let j = 0; j < k; j++) {
+      row.push(generateContinuousValue(type, params));
+    }
+    matrix.push(row);
+  }
+
+  // Per-column statistics
+  const columnStats: MultiVariableColumnStats[] = [];
+  for (let j = 0; j < k; j++) {
+    let sum = 0;
+    for (let i = 0; i < n; i++) sum += matrix[i][j];
+    const mean = sum / n;
+
+    let sumSqDiff = 0;
+    for (let i = 0; i < n; i++) sumSqDiff += (matrix[i][j] - mean) ** 2;
+    const stdDev = n > 1 ? Math.sqrt(sumSqDiff / (n - 1)) : 0;
+
+    columnStats.push({ mean, stdDev });
+  }
+
+  return { matrix, columnStats, n, k };
 };
 
 // ── Theoretical Stats (Continuous) ─────────────────────

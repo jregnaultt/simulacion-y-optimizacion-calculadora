@@ -5,11 +5,14 @@ import {
   getTheoreticalStatsDiscrete,
   generatePoissonDistribution,
   getTheoreticalStatsPoisson,
+  runMultivariableDiscreteSimulation,
   type DiscreteRow,
   type SimulationResult,
   type TheoreticalStats,
+  type MultiVariableResult,
 } from "../utils/math/monteCarloSimulation";
 import { MonteCarloResults } from "./MonteCarloResults";
+import { MonteCarloMatrixResults } from "./MonteCarloMatrixResults";
 import { useSettings } from "../context/SettingsContext";
 import { formatSmart } from "../utils/formatSmart";
 
@@ -45,7 +48,11 @@ export const MonteCarloDiscrete: React.FC = () => {
 
   // ── Shared state ──
   const [numIterations, setNumIterations] = useState<number | "">(1000);
+  const [numVariables, setNumVariables] = useState<number | "">(1);
   const [result, setResult] = useState<SimulationResult | null>(null);
+  const [multiResult, setMultiResult] = useState<MultiVariableResult | null>(
+    null,
+  );
   const [theoretical, setTheoretical] = useState<TheoreticalStats | null>(
     null,
   );
@@ -112,19 +119,41 @@ export const MonteCarloDiscrete: React.FC = () => {
     [activeRows, mode, isValidSum],
   );
 
+  const effectiveK =
+    mode === "poisson" && typeof numVariables === "number" && numVariables > 1
+      ? numVariables
+      : 1;
+
   const handleSimulate = () => {
     if (!canSimulate) return;
+
     if (mode === "poisson" && typeof poissonLambda === "number") {
       setTheoretical(getTheoreticalStatsPoisson(poissonLambda));
+
+      // Multivariable path (k > 1)
+      if (effectiveK > 1) {
+        setResult(null);
+        setMultiResult(
+          runMultivariableDiscreteSimulation(
+            activeRows,
+            numIterations as number,
+            effectiveK,
+          ),
+        );
+        return;
+      }
     } else {
       setTheoretical(getTheoreticalStatsDiscrete(activeRows));
     }
+
+    setMultiResult(null);
     setResult(runDiscreteSimulation(activeRows, numIterations as number));
   };
 
   const handleModeChange = (m: DiscreteMode) => {
     setMode(m);
     setResult(null);
+    setMultiResult(null);
     setTheoretical(null);
   };
 
@@ -330,6 +359,43 @@ export const MonteCarloDiscrete: React.FC = () => {
               </div>
             )}
 
+            {/* ── Num Variables input ── */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
+                Cantidad de Variables (k)
+              </label>
+              <input
+                type="number"
+                inputMode="numeric"
+                min="1"
+                max="50"
+                className={INPUT_CLS}
+                placeholder="Ej. 5"
+                value={numVariables}
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setNumVariables("");
+                    return;
+                  }
+                  const v = parseInt(e.target.value, 10);
+                  if (!isNaN(v) && v > 0) setNumVariables(Math.min(v, 50));
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+" ||
+                    e.key === "."
+                  )
+                    e.preventDefault();
+                }}
+              />
+              <p className="text-[0.65rem] text-slate-400 dark:text-purple-600 mt-1">
+                Cada variable es una columna independiente simulada con la misma λ.
+              </p>
+            </div>
+
             {/* Generated PMF table (limited preview) */}
             {poissonRows.length > 0 && (
               <div className="text-xs text-slate-500 dark:text-purple-500">
@@ -474,6 +540,14 @@ export const MonteCarloDiscrete: React.FC = () => {
           result={result}
           showRandomColumn
           theoretical={theoretical ?? undefined}
+        />
+      )}
+
+      {multiResult && typeof poissonLambda === "number" && (
+        <MonteCarloMatrixResults
+          result={multiResult}
+          theoreticalMean={poissonLambda}
+          theoreticalLabel="λ"
         />
       )}
     </div>

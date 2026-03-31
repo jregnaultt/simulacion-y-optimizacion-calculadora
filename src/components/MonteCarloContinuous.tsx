@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import {
   runContinuousSimulation,
   getTheoreticalStatsContinuous,
+  runMultivariableContinuousSimulation,
   type ContinuousDistType,
   type SimulationResult,
   type TheoreticalStats,
+  type MultiVariableResult,
 } from "../utils/math/monteCarloSimulation";
 import { MonteCarloResults } from "./MonteCarloResults";
+import { MonteCarloMatrixResults } from "./MonteCarloMatrixResults";
 
 const INPUT_CLS = `block w-full rounded-xl border border-slate-300 dark:border-purple-800
   bg-slate-50 dark:bg-[#0e0715] text-slate-900 dark:text-purple-100
@@ -21,6 +24,8 @@ interface DistConfig {
   formula: string;
   params: { key: string; label: string; placeholder: string }[];
   validate: (p: Record<string, number>) => boolean;
+  /** Whether this distribution supports multivariable (k) mode */
+  supportsMulti?: boolean;
 }
 
 const DISTRIBUTIONS: DistConfig[] = [
@@ -37,9 +42,10 @@ const DISTRIBUTIONS: DistConfig[] = [
   {
     value: "exponential",
     label: "Exponencial",
-    formula: "X = −ln(U) · b",
-    params: [{ key: "media", label: "Media (b)", placeholder: "Ej. 5" }],
+    formula: "X = −μ · ln(1 − U)",
+    params: [{ key: "media", label: "Media (μ)", placeholder: "Ej. 5" }],
     validate: (p) => p.media > 0,
+    supportsMulti: true,
   },
   {
     value: "uniform",
@@ -83,7 +89,11 @@ export const MonteCarloContinuous: React.FC = () => {
   const [distType, setDistType] = useState<ContinuousDistType>("normal");
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
   const [numIterations, setNumIterations] = useState<number | "">(1000);
+  const [numVariables, setNumVariables] = useState<number | "">(1);
   const [result, setResult] = useState<SimulationResult | null>(null);
+  const [multiResult, setMultiResult] = useState<MultiVariableResult | null>(
+    null,
+  );
   const [theoretical, setTheoretical] = useState<TheoreticalStats | null>(null);
 
   const currentDist = DISTRIBUTIONS.find((d) => d.value === distType)!;
@@ -104,15 +114,37 @@ export const MonteCarloContinuous: React.FC = () => {
   const canSimulate =
     allValid && typeof numIterations === "number" && numIterations > 0;
 
+  const isMultiMode =
+    currentDist.supportsMulti &&
+    typeof numVariables === "number" &&
+    numVariables > 1;
+
   const handleDistChange = (type: ContinuousDistType) => {
     setDistType(type);
     setParamValues({});
     setResult(null);
+    setMultiResult(null);
   };
 
   const handleSimulate = () => {
     if (!canSimulate) return;
     setTheoretical(getTheoreticalStatsContinuous(distType, parsedParams));
+
+    // Multivariable path (k > 1 and distribution supports it)
+    if (isMultiMode) {
+      setResult(null);
+      setMultiResult(
+        runMultivariableContinuousSimulation(
+          distType,
+          parsedParams,
+          numIterations as number,
+          numVariables as number,
+        ),
+      );
+      return;
+    }
+
+    setMultiResult(null);
     setResult(
       runContinuousSimulation(distType, parsedParams, numIterations as number),
     );
@@ -199,6 +231,46 @@ export const MonteCarloContinuous: React.FC = () => {
               </div>
             ))}
           </div>
+
+          {/* ── Num Variables input (only for supported distributions) ── */}
+          {currentDist.supportsMulti && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
+                Cantidad de Variables (k)
+              </label>
+              <input
+                type="number"
+                inputMode="numeric"
+                min="1"
+                max="50"
+                className={INPUT_CLS}
+                placeholder="Ej. 5"
+                value={numVariables}
+                onChange={(e) => {
+                  if (e.target.value === "") {
+                    setNumVariables("");
+                    return;
+                  }
+                  const v = parseInt(e.target.value, 10);
+                  if (!isNaN(v) && v > 0) setNumVariables(Math.min(v, 50));
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "-" ||
+                    e.key === "e" ||
+                    e.key === "E" ||
+                    e.key === "+" ||
+                    e.key === "."
+                  )
+                    e.preventDefault();
+                }}
+              />
+              <p className="text-[0.65rem] text-slate-400 dark:text-purple-600 mt-1">
+                Cada variable es una columna independiente simulada con la misma
+                μ.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -273,11 +345,22 @@ export const MonteCarloContinuous: React.FC = () => {
         Simular
       </button>
 
-      {/* ── Results ── */}
+      {/* ── Single-variable Results ── */}
       {result && (
         <MonteCarloResults
           result={result}
           theoretical={theoretical ?? undefined}
+        />
+      )}
+
+      {/* ── Multivariable Results ── */}
+      {multiResult && (
+        <MonteCarloMatrixResults
+          result={multiResult}
+          theoreticalMean={parsedParams.media ?? 0}
+          theoreticalLabel="μ"
+          continuous
+          generatorFormula={currentDist.formula}
         />
       )}
     </div>
