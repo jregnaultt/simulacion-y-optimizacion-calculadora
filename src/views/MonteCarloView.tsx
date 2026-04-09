@@ -57,7 +57,7 @@ export default function MonteCarloView() {
           >
             Discreta
             <span className="block text-[0.65rem] font-normal opacity-70">
-              Manual / Poisson
+              Poisson
             </span>
           </button>
           <button
@@ -71,7 +71,7 @@ export default function MonteCarloView() {
           >
             Continua
             <span className="block text-[0.65rem] font-normal opacity-70">
-              Normal, Exponencial, etc.
+              Exponencial
             </span>
           </button>
         </div>

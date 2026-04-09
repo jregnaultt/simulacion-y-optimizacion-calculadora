@@ -3,7 +3,6 @@ import {
   runContinuousSimulation,
   getTheoreticalStatsContinuous,
   runMultivariableContinuousSimulation,
-  type ContinuousDistType,
   type SimulationResult,
   type TheoreticalStats,
   type MultiVariableResult,
@@ -18,76 +17,10 @@ const INPUT_CLS = `block w-full rounded-xl border border-slate-300 dark:border-p
   focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-500/15
   dark:focus:bg-[#140a20] outline-none text-sm p-2 transition-all`;
 
-interface DistConfig {
-  value: ContinuousDistType;
-  label: string;
-  formula: string;
-  params: { key: string; label: string; placeholder: string }[];
-  validate: (p: Record<string, number>) => boolean;
-  /** Whether this distribution supports multivariable (k) mode */
-  supportsMulti?: boolean;
-}
-
-const DISTRIBUTIONS: DistConfig[] = [
-  {
-    value: "normal",
-    label: "Normal",
-    formula: "X = μ + σ · Z",
-    params: [
-      { key: "media", label: "Media (μ)", placeholder: "Ej. 0" },
-      { key: "desvEst", label: "Desv. Estándar (σ)", placeholder: "Ej. 1" },
-    ],
-    validate: (p) => p.desvEst > 0,
-  },
-  {
-    value: "exponential",
-    label: "Exponencial",
-    formula: "X = −μ · ln(1 − U)",
-    params: [{ key: "media", label: "Media (μ)", placeholder: "Ej. 5" }],
-    validate: (p) => p.media > 0,
-    supportsMulti: true,
-  },
-  {
-    value: "uniform",
-    label: "Uniforme",
-    formula: "X = a + (b − a) · U",
-    params: [
-      { key: "a", label: "Límite Inferior (a)", placeholder: "Ej. 0" },
-      { key: "b", label: "Límite Superior (b)", placeholder: "Ej. 10" },
-    ],
-    validate: (p) => p.a < p.b,
-  },
-  {
-    value: "lognormal",
-    label: "Lognormal",
-    formula: "X = e^(μ + σ · Z)",
-    params: [
-      { key: "media", label: "Media de ln(X) (μ)", placeholder: "Ej. 0" },
-      {
-        key: "desvEst",
-        label: "Desv. Est. de ln(X) (σ)",
-        placeholder: "Ej. 1",
-      },
-    ],
-    validate: (p) => p.desvEst > 0,
-  },
-  {
-    value: "weibull",
-    label: "Weibull",
-    formula: "X = b · (−ln(U))^(1/a)",
-    params: [
-      { key: "escala", label: "Escala (b)", placeholder: "Ej. 1" },
-      { key: "forma", label: "Forma (a)", placeholder: "Ej. 1.5" },
-    ],
-    validate: (p) => p.escala > 0 && p.forma > 0,
-  },
-];
-
 const PRESET_N = [100, 1000, 5000, 10000];
 
 export const MonteCarloContinuous: React.FC = () => {
-  const [distType, setDistType] = useState<ContinuousDistType>("normal");
-  const [paramValues, setParamValues] = useState<Record<string, string>>({});
+  const [media, setMedia] = useState<number | "">(5);
   const [numIterations, setNumIterations] = useState<number | "">(1000);
   const [numVariables, setNumVariables] = useState<number | "">(1);
   const [result, setResult] = useState<SimulationResult | null>(null);
@@ -96,47 +29,27 @@ export const MonteCarloContinuous: React.FC = () => {
   );
   const [theoretical, setTheoretical] = useState<TheoreticalStats | null>(null);
 
-  const currentDist = DISTRIBUTIONS.find((d) => d.value === distType)!;
-
-  // Parse & validate params
-  const parsedParams: Record<string, number> = {};
-  let allValid = true;
-  for (const p of currentDist.params) {
-    const v = parseFloat(paramValues[p.key] ?? "");
-    if (isNaN(v)) {
-      allValid = false;
-      break;
-    }
-    parsedParams[p.key] = v;
-  }
-  if (allValid && !currentDist.validate(parsedParams)) allValid = false;
+  const allValid = typeof media === "number" && media > 0;
 
   const canSimulate =
     allValid && typeof numIterations === "number" && numIterations > 0;
 
   const isMultiMode =
-    currentDist.supportsMulti &&
-    typeof numVariables === "number" &&
-    numVariables > 1;
-
-  const handleDistChange = (type: ContinuousDistType) => {
-    setDistType(type);
-    setParamValues({});
-    setResult(null);
-    setMultiResult(null);
-  };
+    typeof numVariables === "number" && numVariables > 1;
 
   const handleSimulate = () => {
     if (!canSimulate) return;
-    setTheoretical(getTheoreticalStatsContinuous(distType, parsedParams));
+    const params = { media: media as number };
 
-    // Multivariable path (k > 1 and distribution supports it)
+    setTheoretical(getTheoreticalStatsContinuous("exponential", params));
+
+    // Multivariable path (k > 1)
     if (isMultiMode) {
       setResult(null);
       setMultiResult(
         runMultivariableContinuousSimulation(
-          distType,
-          parsedParams,
+          "exponential",
+          params,
           numIterations as number,
           numVariables as number,
         ),
@@ -146,131 +59,98 @@ export const MonteCarloContinuous: React.FC = () => {
 
     setMultiResult(null);
     setResult(
-      runContinuousSimulation(distType, parsedParams, numIterations as number),
+      runContinuousSimulation("exponential", params, numIterations as number),
     );
   };
 
   return (
     <div className="flex flex-col h-full animate-[fadeSlideUp_0.3s_ease_both]">
       <p className="text-slate-500 dark:text-purple-400 text-sm leading-relaxed mb-4">
-        Seleccione una distribución continua y configure sus parámetros para
-        generar valores aleatorios mediante{" "}
+        Distribución Exponencial (continua). Los valores se generan mediante{" "}
         <span className="font-semibold text-slate-700 dark:text-purple-300">
           simulación Monte Carlo
         </span>
         .
       </p>
 
-      {/* ── Distribution Selector ── */}
-      <div className="bg-white dark:bg-[#12091c] rounded-2xl border border-slate-200 dark:border-purple-900/60 shadow-sm dark:shadow-black/40 overflow-hidden mb-4">
-        <div className="p-4 border-b border-slate-100 dark:border-purple-900/40 bg-slate-50/50 dark:bg-[#0a040f]/60">
-          <h2 className="text-sm font-semibold text-slate-700 dark:text-purple-500/90 uppercase tracking-wider">
-            Tipo de Distribución
-          </h2>
-        </div>
-        <div className="p-4">
-          <div className="flex flex-wrap gap-2">
-            {DISTRIBUTIONS.map((d) => (
-              <button
-                key={d.value}
-                onClick={() => handleDistChange(d.value)}
-                className={`px-3 py-2 rounded-xl text-sm font-semibold transition-all
-                  ${
-                    distType === d.value
-                      ? "bg-purple-600 text-white shadow-sm"
-                      : "bg-slate-100 dark:bg-purple-950/40 text-slate-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40"
-                  }`}
-              >
-                {d.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Formula hint */}
-          <div className="mt-3 px-3 py-2 rounded-xl bg-slate-50 dark:bg-purple-950/20 border border-slate-200 dark:border-purple-900/50">
-            <span className="text-xs text-slate-500 dark:text-purple-500 font-medium">
-              Fórmula:{" "}
-            </span>
-            <span className="text-sm font-mono text-purple-700 dark:text-purple-300 font-semibold">
-              {currentDist.formula}
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* ── Parameters ── */}
       <div className="bg-white dark:bg-[#12091c] rounded-2xl border border-slate-200 dark:border-purple-900/60 shadow-sm dark:shadow-black/40 overflow-hidden mb-4">
         <div className="p-4 border-b border-slate-100 dark:border-purple-900/40 bg-slate-50/50 dark:bg-[#0a040f]/60">
           <h2 className="text-sm font-semibold text-slate-700 dark:text-purple-500/90 uppercase tracking-wider">
-            Parámetros
+            Distribución Exponencial
           </h2>
         </div>
         <div className="p-4 space-y-4">
-          <div
-            className={`grid gap-3 ${currentDist.params.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}
-          >
-            {currentDist.params.map((p) => (
-              <div key={p.key}>
-                <label className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
-                  {p.label}
-                </label>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  step="any"
-                  className={INPUT_CLS}
-                  placeholder={p.placeholder}
-                  value={paramValues[p.key] ?? ""}
-                  onChange={(e) =>
-                    setParamValues((prev) => ({
-                      ...prev,
-                      [p.key]: e.target.value,
-                    }))
-                  }
-                />
-              </div>
-            ))}
+          {/* Formula hint */}
+          <div className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-purple-950/20 border border-slate-200 dark:border-purple-900/50">
+            <span className="text-xs text-slate-500 dark:text-purple-500 font-medium">
+              Fórmula:{" "}
+            </span>
+            <span className="text-sm font-mono text-purple-700 dark:text-purple-300 font-semibold">
+              X = −μ · ln(1 − U)
+            </span>
           </div>
 
-          {/* ── Num Variables input (only for supported distributions) ── */}
-          {currentDist.supportsMulti && (
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
-                Cantidad de Variables (k)
-              </label>
-              <input
-                type="number"
-                inputMode="numeric"
-                min="1"
-                max="50"
-                className={INPUT_CLS}
-                placeholder="Ej. 5"
-                value={numVariables}
-                onChange={(e) => {
-                  if (e.target.value === "") {
-                    setNumVariables("");
-                    return;
-                  }
-                  const v = parseInt(e.target.value, 10);
-                  if (!isNaN(v) && v > 0) setNumVariables(Math.min(v, 50));
-                }}
-                onKeyDown={(e) => {
-                  if (
-                    e.key === "-" ||
-                    e.key === "e" ||
-                    e.key === "E" ||
-                    e.key === "+" ||
-                    e.key === "."
-                  )
-                    e.preventDefault();
-                }}
-              />
-              <p className="text-[0.65rem] text-slate-400 dark:text-purple-600 mt-1">
-                Cada variable es una columna independiente simulada con la misma
-                μ.
-              </p>
-            </div>
-          )}
+          {/* Media (μ) */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
+              Media (μ)
+            </label>
+            <input
+              type="number"
+              inputMode="decimal"
+              step="any"
+              className={INPUT_CLS}
+              placeholder="Ej. 5"
+              value={media}
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  setMedia("");
+                  return;
+                }
+                const v = parseFloat(e.target.value);
+                if (!isNaN(v) && v > 0) setMedia(v);
+              }}
+            />
+          </div>
+
+          {/* ── Num Variables input ── */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-purple-400 mb-1">
+              Cantidad de Variables (k)
+            </label>
+            <input
+              type="number"
+              inputMode="numeric"
+              min="1"
+              max="50"
+              className={INPUT_CLS}
+              placeholder="Ej. 5"
+              value={numVariables}
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  setNumVariables("");
+                  return;
+                }
+                const v = parseInt(e.target.value, 10);
+                if (!isNaN(v) && v > 0) setNumVariables(Math.min(v, 50));
+              }}
+              onKeyDown={(e) => {
+                if (
+                  e.key === "-" ||
+                  e.key === "e" ||
+                  e.key === "E" ||
+                  e.key === "+" ||
+                  e.key === "."
+                )
+                  e.preventDefault();
+              }}
+            />
+            <p className="text-[0.65rem] text-slate-400 dark:text-purple-600 mt-1">
+              Cada variable es una columna independiente simulada con la misma
+              μ.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -357,10 +237,10 @@ export const MonteCarloContinuous: React.FC = () => {
       {multiResult && (
         <MonteCarloMatrixResults
           result={multiResult}
-          theoreticalMean={parsedParams.media ?? 0}
+          theoreticalMean={media as number}
           theoreticalLabel="μ"
           continuous
-          generatorFormula={currentDist.formula}
+          generatorFormula="X = −μ · ln(1 − U)"
         />
       )}
     </div>

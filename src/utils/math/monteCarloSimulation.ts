@@ -1,6 +1,7 @@
 /**
  * Simulación de Monte Carlo – Lógica de simulación
- * Variables discretas (transformación inversa) y variables continuas.
+ * Variables discretas (Poisson – Transformación Inversa) y
+ * variables continuas (Exponencial – X = −μ·ln(1−U)).
  */
 
 // ── Types ──────────────────────────────────────────────
@@ -269,40 +270,16 @@ export const runMultivariableDiscreteSimulation = (
   return { matrix, columnStats, n, k };
 };
 
-// ── Continuous Distributions ───────────────────────────
+// ── Continuous: Exponential Distribution ────────────────
 
-export type ContinuousDistType =
-  | "uniform"
-  | "exponential"
-  | "normal"
-  | "lognormal"
-  | "weibull";
-
-/** Box-Muller transform */
-const boxMullerNormal = (mu: number, sigma: number): number => {
-  const u1 = Math.random();
-  const u2 = Math.random();
-  const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-  return mu + sigma * z;
-};
+export type ContinuousDistType = "exponential";
 
 export const generateContinuousValue = (
-  type: ContinuousDistType,
+  _type: ContinuousDistType,
   params: Record<string, number>,
 ): number => {
   const r = Math.random();
-  switch (type) {
-    case "uniform":
-      return params.a + (params.b - params.a) * r;
-    case "exponential":
-      return -Math.log(r) * params.media;
-    case "normal":
-      return boxMullerNormal(params.media, params.desvEst);
-    case "lognormal":
-      return Math.exp(boxMullerNormal(params.media, params.desvEst));
-    case "weibull":
-      return params.escala * Math.pow(-Math.log(r), 1 / params.forma);
-  }
+  return -Math.log(r) * params.media;
 };
 
 export const runContinuousSimulation = (
@@ -328,10 +305,10 @@ export const runContinuousSimulation = (
   const se = stdDev / Math.sqrt(values.length);
   const ci: [number, number] = [mean - 1.96 * se, mean + 1.96 * se];
 
-  // Histogram: equal-width bins
+  // Histogram: equal-width bins (Sturges' rule)
   const numBins = Math.min(
     20,
-    Math.max(5, Math.ceil(Math.sqrt(numIterations))),
+    Math.max(5, Math.ceil(1 + Math.log2(numIterations))),
   );
   const range = max - min || 1;
   const binWidth = range / numBins;
@@ -367,8 +344,8 @@ export const runContinuousSimulation = (
 
 /**
  * Run a multivariable continuous simulation producing an n×k matrix.
- * Each column is an independent sequence generated via the corresponding
- * continuous distribution generator.
+ * Each column is an independent sequence generated via the Exponential
+ * distribution generator: X = −μ·ln(1−U).
  *
  * Column stats use the **sample** standard deviation (dividing by n−1).
  */
@@ -405,59 +382,11 @@ export const runMultivariableContinuousSimulation = (
   return { matrix, columnStats, n, k };
 };
 
-// ── Theoretical Stats (Continuous) ─────────────────────
-
-/** Lanczos approximation of the Gamma function */
-const gammaLanczos = (z: number): number => {
-  if (z < 0.5) {
-    return Math.PI / (Math.sin(Math.PI * z) * gammaLanczos(1 - z));
-  }
-  z -= 1;
-  const g = 7;
-  const c = [
-    0.99999999999980993, 676.5203681218851, -1259.1392167224028,
-    771.32342877765313, -176.61502916214059, 12.507343278686905,
-    -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7,
-  ];
-  let x = c[0];
-  for (let i = 1; i < g + 2; i++) {
-    x += c[i] / (z + i);
-  }
-  const t = z + g + 0.5;
-  return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
-};
+// ── Theoretical Stats (Continuous – Exponential only) ──
 
 export const getTheoreticalStatsContinuous = (
-  type: ContinuousDistType,
+  _type: ContinuousDistType,
   params: Record<string, number>,
 ): TheoreticalStats => {
-  switch (type) {
-    case "normal":
-      return { mean: params.media, stdDev: params.desvEst };
-    case "exponential":
-      return { mean: params.media, stdDev: params.media };
-    case "uniform": {
-      const a = params.a,
-        b = params.b;
-      return {
-        mean: (a + b) / 2,
-        stdDev: Math.sqrt((b - a) ** 2 / 12),
-      };
-    }
-    case "lognormal": {
-      const mu = params.media,
-        s = params.desvEst;
-      const mean = Math.exp(mu + (s ** 2) / 2);
-      const variance = (Math.exp(s ** 2) - 1) * Math.exp(2 * mu + s ** 2);
-      return { mean, stdDev: Math.sqrt(variance) };
-    }
-    case "weibull": {
-      const b = params.escala,
-        a = params.forma;
-      const mean = b * gammaLanczos(1 + 1 / a);
-      const variance =
-        b ** 2 * (gammaLanczos(1 + 2 / a) - gammaLanczos(1 + 1 / a) ** 2);
-      return { mean, stdDev: Math.sqrt(Math.max(0, variance)) };
-    }
-  }
+  return { mean: params.media, stdDev: params.media };
 };
